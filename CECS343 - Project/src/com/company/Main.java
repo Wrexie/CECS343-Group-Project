@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 //Main JBDC Class
 public class Main {
-    public static String DB_URL = "jdbc:mysql://localhost:3306/test";
+    public static String DB_URL = "jdbc:derby:JDBC Project";
     public static String DBNAME;
     public static String user;
     public static String pass;
     static Scanner input = new Scanner(System.in);
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     static final String PRINT_FORMAT="%-25s%-25s%-25s%-25s\n";
     static final String PRINT_FORMAT2 = "%-25s%-25s%-45s%-25s%-35s%-25s%-25s" + PRINT_FORMAT;
 
@@ -23,20 +23,6 @@ public class Main {
     public static void main(String[] args) {
         String query;
         ResultSet rs = null;
-        System.out.println("Enter name of the database: ");
-        DBNAME = input.nextLine();
-        System.out.println("Enter username: ");
-        user = input.nextLine();
-        System.out.println("Enter password: ");
-        pass = input.nextLine();
-        if(user.length() == 0 && pass.length() == 0)
-        {
-            DB_URL = DB_URL + DBNAME;
-        }
-        else
-        {
-            DB_URL = DB_URL + DBNAME + ";user=" + user + ";password=" + pass;
-        }
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement preparedStatement2 = null;
@@ -44,7 +30,7 @@ public class Main {
             //need to establish driver
             Class.forName(JDBC_DRIVER);
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "1234");
+            conn = DriverManager.getConnection(DB_URL);
             System.out.println("Connection Successful!");
             stmt = conn.createStatement();
 
@@ -60,12 +46,12 @@ public class Main {
                 //Evaluate user choice
                 //Menu choice 1: List all writing groups
                 if(choice.equals("1")){
-                    query = "select GROUPNAME from WRITINGGROUPS";
+                    query = "select * from tasks";
                     rs = stmt.executeQuery(query);
                     System.out.println("\nWriting Groups: ");
-                    System.out.printf("GROUPNAME\n");
+                    System.out.printf("TASKS\n");
                     while (rs.next()){
-                        String groupName = rs.getString("GROUPNAME");
+                        String groupName = rs.getString("title");
                         System.out.printf(dispNull(groupName) + "\n");
                     }
                     System.out.println("\n");

@@ -1,0 +1,46 @@
+Fri Nov 13 20:26:19 PST 2020 Thread[main,5,main] Cleanup action starting
+java.sql.SQLException: Database 'JDBC Project' not found.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.AutoloadedDriver.connect(Unknown Source)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:677)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:251)
+	at com.company.Main.main(Main.java:33)
+Caused by: ERROR XJ004: Database 'JDBC Project' not found.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 17 more
+============= begin nested exception, level (1) ===========
+ERROR XJ004: Database 'JDBC Project' not found.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
+	at org.apache.derby.jdbc.InternalDriver.getNewEmbedConnection(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.InternalDriver.connect(Unknown Source)
+	at org.apache.derby.jdbc.AutoloadedDriver.connect(Unknown Source)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:677)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:251)
+	at com.company.Main.main(Main.java:33)
+============= end nested exception, level (1) ===========
+Cleanup action completed

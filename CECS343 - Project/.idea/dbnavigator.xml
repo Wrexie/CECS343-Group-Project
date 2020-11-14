@@ -23,25 +23,24 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="044e7674-db10-4ecf-aedd-2c2aeefffd2d">
-        <schema name="store" object-types="table, view" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="044e7674-db10-4ecf-aedd-2c2aeefffd2d">
-      <console name="Store" type="STANDARD" schema="store" session="Main" />
+    <connection id="81af0ffd-cc3f-4fb1-99ec-5e7fdd0339a2">
+      <console name="local" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="044e7674-db10-4ecf-aedd-2c2aeefffd2d" />
+    <connection id="81af0ffd-cc3f-4fb1-99ec-5e7fdd0339a2" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
@@ -63,20 +62,20 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="044e7674-db10-4ecf-aedd-2c2aeefffd2d" active="true">
+      <connection id="81af0ffd-cc3f-4fb1-99ec-5e7fdd0339a2" active="true">
         <database>
-          <name value="Store" />
+          <name value="local" />
           <description value="" />
-          <database-type value="MYSQL" />
+          <database-type value="GENERIC" />
           <config-type value="CUSTOM" />
           <database-version value="8.0" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="C:\Users\Andrew\db-derby-10.14.2.0-lib\db-derby-10.14.2.0-lib\lib" />
-          <driver value="" />
-          <url value="jdbc:mysql://localhost:3306/mysql" />
-          <type value="USER_PASSWORD" />
-          <user value="root" />
-          <deprecated-pwd value="MTIzNA==" />
+          <driver-source value="EXTERNAL" />
+          <driver-library value="C:\Users\Andrew\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar" />
+          <driver value="org.apache.derby.jdbc.EmbeddedDriver" />
+          <url value="jdbc:derby:testdb" />
+          <type value="NONE" />
+          <user value="" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />

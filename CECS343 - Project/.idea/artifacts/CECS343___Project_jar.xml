@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="CECS343 - Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/CECS343___Project_jar</output-path>
+    <root id="archive" name="CECS343 - Project.jar">
+      <element id="module-output" name="CECS343 - Project" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/mariadb/jdbc/mariadb-java-client/2.6.0/mariadb-java-client-2.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.22/mysql-connector-java-8.0.22.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.11.4/protobuf-java-3.11.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
