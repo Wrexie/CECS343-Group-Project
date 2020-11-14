@@ -46,12 +46,12 @@ public class Main {
                 //Evaluate user choice
                 //Menu choice 1: List all writing groups
                 if(choice.equals("1")){
-                    query = "select * from tasks";
+                    query = "select GROUPNAME from WRITINGGROUPS";
                     rs = stmt.executeQuery(query);
                     System.out.println("\nWriting Groups: ");
-                    System.out.printf("TASKS\n");
+                    System.out.printf("GROUPNAME\n");
                     while (rs.next()){
-                        String groupName = rs.getString("title");
+                        String groupName = rs.getString("GROUPNAME");
                         System.out.printf(dispNull(groupName) + "\n");
                     }
                     System.out.println("\n");
