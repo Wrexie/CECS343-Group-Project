@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 //Main JBDC Class
 public class Main {
-    public static String DB_URL = "jdbc:derby:JDBC Project";
+    public static String DB_URL = "jdbc:derby:CECS343";
     public static String DBNAME;
     public static String user;
     public static String pass;
@@ -37,22 +37,30 @@ public class Main {
             //Main loop
             while(true){
                 //Print menu
-                System.out.println("\nWhat would you like to do?\n1.List all writing groups\n2.List all publishers\n"
+                System.out.println("\nWhat would you like to do?\n1.List all customers\n2.List all publishers\n"
                         + "3.List all book titles\n"+ "4.List all data for a writing group\n"+"5.Insert a new book\n"
                         + "6.List all data from a publisher\n"+
                         "7.List all data from a book\n"+"8.Insert a new publisher and replace old publisher\n"+"9.Delete a specific book\n"+"E.Exit");
                 String choice = input.nextLine();
 
                 //Evaluate user choice
-                //Menu choice 1: List all writing groups
+                //Menu choice 1: List all customers
                 if(choice.equals("1")){
-                    query = "select GROUPNAME from WRITINGGROUPS";
+                    String LOCAL_FORMAT = "%-15s%-25s%-30s%-15s%-25s%-25s\n";
+                    query = "select * from customers";
                     rs = stmt.executeQuery(query);
-                    System.out.println("\nWriting Groups: ");
-                    System.out.printf("GROUPNAME\n");
+                    System.out.println("\nCustomers: ");
+                    System.out.printf(LOCAL_FORMAT,"CustomerID","Firstname","Lastname","Status",
+                            "Street","Zipcode");
                     while (rs.next()){
-                        String groupName = rs.getString("GROUPNAME");
-                        System.out.printf(dispNull(groupName) + "\n");
+                        String customerid = rs.getString("customerid");
+                        String firstname = rs.getString("firstname");
+                        String lastname = rs.getString("lastname");
+                        String status = rs.getString("status");
+                        String street = rs.getString("street");
+                        String zipcode = rs.getString("zipcode");
+                        System.out.printf(LOCAL_FORMAT, dispNull(customerid), dispNull(firstname), dispNull(lastname),
+                        dispNull(status), dispNull(street), dispNull(zipcode));
                     }
                     System.out.println("\n");
                 }
