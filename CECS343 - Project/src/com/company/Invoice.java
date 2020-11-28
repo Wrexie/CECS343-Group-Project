@@ -17,15 +17,14 @@ public class Invoice {
     private int thirtyDayCount; //saves number of 30 day cycle's has passed (probably don't display to user in UI)
     private boolean isDeliverable;
     private LocalDate openedDate;
-    private int salesPerson; //change to salesperson
-    private Customer customer; //change to Customer
+    private Employee employee;
+    private Customer customer;
     private ArrayList<String> prodList; // change to product
     private InvoiceStatus status;
 
-    //todo: add salesperson to all constructors
 
     //constructor for adding an unpaid invoice
-    public Invoice(boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer) throws IllegalArgumentException{ // change parameters to appropriate classes
+    public Invoice(boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee) throws IllegalArgumentException{
 
         if(customer.getStatus().equals(CustomerStatus.SUSPENDED)) {
             throw new IllegalArgumentException("Cannot make unpaid invoice for suspended customer.");
@@ -42,10 +41,11 @@ public class Invoice {
         this.status = InvoiceStatus.UNPAID;
         this.thirtyDayCount = 0;
         this.openedDate = openedDate;
+        this.employee = employee;
     }
 
     //constructor for adding a new paid invoice
-    public Invoice(double total, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, ArrayList<String> prodList) { // change parameters to appropriate classes
+    public Invoice(double total, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, ArrayList<String> prodList) {
         this.total = total;
         this.owed = 0;
         this.taxAmt = 0;
@@ -56,10 +56,11 @@ public class Invoice {
         this.status = InvoiceStatus.PAID;
         this.thirtyDayCount = thirtyDayCount;
         this.openedDate = openedDate;
+        this.employee = employee;
     }
 
     //constructor for loading a customer from database for use
-    public Invoice(double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, ArrayList<String> prodList, InvoiceStatus status) { // change parameters to appropriate classes
+    public Invoice(double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, ArrayList<String> prodList, InvoiceStatus status) {
         this.total = total;
         this.owed = owed;
         this.isDeliverable = isDeliverable;
@@ -69,6 +70,7 @@ public class Invoice {
         this.status = status;
         this.thirtyDayCount = thirtyDayCount;
         this.openedDate = openedDate;
+        this.employee = employee;
     }
 
 
@@ -189,8 +191,8 @@ public class Invoice {
         return customer;
     }
 
-    public int getSalesPerson() {//todo: change to salesperson obj
-        return salesPerson;
+    public Employee getEmployee() {
+        return employee;
     }
 
     public LocalDate getOpenedDate() {
