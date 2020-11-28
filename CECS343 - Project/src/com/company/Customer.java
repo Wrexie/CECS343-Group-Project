@@ -9,7 +9,7 @@ public class Customer {
     private double taxRate;
 
     //use when creating new customer (ID generated in DB)
-    public Customer(String firstName, String fullName, CustomerStatus status, double taxRate) {
+    public Customer(String fullName, CustomerStatus status, double taxRate) {
         this.fullName = fullName;
         this.shipAddress = shipAddress;
         this.status = status;
