@@ -1,7 +1,7 @@
 package com.company;
 
 public class User {
-    // instance variables
+    // instance variable
     private String username;
     private String password;
     private int userID;

@@ -201,8 +201,6 @@ public class UI {
         // TODO: 11/26/20 Need to add a verification method to determine if the user information is store in the database
         // for testing purpose
         Scanner userInput = new Scanner(System.in);
-        LoginController controller = new LoginController();
-        controller.checkAcount();
 
         String userName = "", password = "";
         System.out.format("---------------------------\n    Login Menu\nUser information is not found.\nCreating user...\n");
