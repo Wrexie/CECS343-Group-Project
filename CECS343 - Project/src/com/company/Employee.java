@@ -3,18 +3,18 @@ package com.company;
 public class Employee {
     private int employeeID;
     private String employeeName;
-    private int phone;
+    private String phone;
     private double commRate;
 
     //creating new employee
-    public Employee(String employeeName, int phone, double commRate) {
+    public Employee(String employeeName, String phone, double commRate) {
         this.employeeName = employeeName;
         this.phone = phone;
         this.commRate = commRate;
     }
 
     //load from DB
-    public Employee(int employeeID, String employeeName, int phone, double commRate) {
+    public Employee(int employeeID, String employeeName, String phone, double commRate) {
         this.employeeID = employeeID;
         this.employeeName = employeeName;
         this.phone = phone;
@@ -29,7 +29,7 @@ public class Employee {
         this.employeeName = employeeName;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -45,7 +45,7 @@ public class Employee {
         return employeeID;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 }

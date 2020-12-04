@@ -4,19 +4,13 @@ public class User {
     // instance variable
     private String username;
     private String password;
-    private int userID;
 
     // constructor
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
-    // load db once created
-    public User(int id, String username, String password){
-        this.userID = id;
-        this.username = username;
-        this.password = password;
-    }
+
 
     // getters
     public String getPassword() {
@@ -27,9 +21,6 @@ public class User {
         return username;
     }
 
-    public int getUserID() {
-        return userID;
-    }
 
     // accessor
     public void setPassword(String password) {
