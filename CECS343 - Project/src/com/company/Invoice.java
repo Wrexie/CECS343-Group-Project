@@ -1,8 +1,7 @@
 package com.company;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 
@@ -14,14 +13,13 @@ public class Invoice {
     private double total;
     private double deliveryFee;
     private double taxAmt;
-    private double commAmount; // todo: make sure commAmount works right
     private double owed;
     private int thirtyDayCount; //saves number of 30 day cycle's has passed (probably don't display to user in UI)
     private boolean isDeliverable;
-    private LocalDate openedDate; //
+    private LocalDate openedDate;
     private Employee employee;
     private Customer customer;
-    private HashMap<Integer, Integer> prodList; // change to product
+    private ArrayList<String> prodList; // change to product
     private InvoiceStatus status;
 
 
@@ -36,11 +34,10 @@ public class Invoice {
         this.total = 0;
         this.owed = 0;
         this.taxAmt = 0;
-        this.commAmount = 0;
         this.isDeliverable = isDeliverable;
         this.deliveryFee = deliveryFee;
         this.customer = customer;
-        this.prodList =  new HashMap<>();
+        this.prodList =  new ArrayList<>();
         this.status = InvoiceStatus.UNPAID;
         this.thirtyDayCount = 0;
         this.openedDate = openedDate;
@@ -48,11 +45,10 @@ public class Invoice {
     }
 
     //constructor for adding a new paid invoice
-    public Invoice(double total, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList) {
+    public Invoice(double total, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, ArrayList<String> prodList) {
         this.total = total;
         this.owed = 0;
-        this.commAmount = total*employee.getCommRate();
-        this.taxAmt = total*customer.getTaxRate();
+        this.taxAmt = 0;
         this.isDeliverable = isDeliverable;
         this.deliveryFee = deliveryFee;
         this.customer = customer;
@@ -64,10 +60,9 @@ public class Invoice {
     }
 
     //constructor for loading a customer from database for use
-    public Invoice(double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList, InvoiceStatus status) {
+    public Invoice(double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, ArrayList<String> prodList, InvoiceStatus status) {
         this.total = total;
         this.owed = owed;
-        this.taxAmt = total*customer.getTaxRate();
         this.isDeliverable = isDeliverable;
         this.deliveryFee = deliveryFee;
         this.customer = customer;
@@ -81,15 +76,12 @@ public class Invoice {
 
     //TODO: have this work for product objects
     public void addProduct(String product, int quantity) { //change String to product
-        //todo: query to see if it product exists
         if(status.equals(InvoiceStatus.UNPAID)) {
-            //todo: change to integrate with HashMaps (save quantity value)
             /*if(product.getQuantity()-quantity >= 0) { //check stock of prod before adding
                 for(int i = 0; i < quantity; i++) {
                     prodList.add(product);
                     //owed += product.getPrice();
                     //total += product.getPrice();
-                    //commAmount =
                 }
                 taxAmt = total*customer.getTaxRate();
             } else {
@@ -183,7 +175,7 @@ public class Invoice {
         return taxAmt;
     }
 
-    public HashMap<Integer, Integer> getProdList() {
+    public ArrayList<String> getProdList() {
         return prodList;
     }
 
