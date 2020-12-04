@@ -53,7 +53,7 @@ public class UI {
      */
     private static void warehouseMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Check stock\n-1.Return to main menu\n");
+        System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Check stock\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
         while (sel != -1) {
             sel = getUserOption(userInput);
             switch (sel) {
@@ -63,6 +63,12 @@ public class UI {
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update warehouse
                     System.out.format("---------------------------\n    update Warehouse\nWarehouse name: ");
+                    break;
+                case 3:
+                    // TODO: 12/4/20 Redirected the user to select a warehouse and to update the product from within the warehouse
+                    break;
+                case 4:
+                    // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
                     break;
                 case -1:
                     mainMenu();
@@ -79,7 +85,7 @@ public class UI {
      */
     private static void salesmanMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n-1.Return to main menu\n");
+        System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
         while (sel != -1) {
             sel = getUserOption(userInput);
             switch (sel) {
@@ -88,6 +94,9 @@ public class UI {
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update warehouse
+                    break;
+                case 3:
+                    // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
                     break;
                 case -1:
                     mainMenu();
@@ -129,7 +138,7 @@ public class UI {
      */
     private static void invoiceMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n-1.Return to main menu\n");
+        System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
         while (sel != -1) {
             sel = getUserOption(userInput);
             switch (sel) {
@@ -138,6 +147,12 @@ public class UI {
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update invoice
+                    break;
+                case 3:
+                    // TODO: 12/4/20  Display invoices are open sorted in increasing order of invoice date. <- from rfp
+                    break;
+                case 4:
+                    // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
                     break;
                 case -1:
                     mainMenu();
@@ -149,12 +164,12 @@ public class UI {
     }
 
     /**
-     * productMenu: The central hub for the Invoice.
+     * productMenu: The central hub for the product.
      * @param userInput acts as the user "actions" as it determine where the UI should go to next
      */
     private static void productMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Add product\n-1.Return to main menu\n");
+        System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Add product\n 2.Update product\n 3.Display all products\n 4.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
         while (sel != -1) {
             sel = getUserOption(userInput);
             switch (sel) {
@@ -163,6 +178,15 @@ public class UI {
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update product
+                    break;
+                case 3:
+                    // TODO: 12/4/20 Display each product (product name, Selling Price, Cost Price,
+                    //  Total Quantity on Hand, Quantity Sold, Total Sales, Total Cost, Total Profit
+                    //  and Total Profit Percent) need to be sorted in decreasing order of profit percent. <- from rfp
+                    break;
+                case 4:
+                    // TODO: 12/4/20 Display products in inventory that have 5 or fewer in the warehouse
+                    //  (sorted in increasing order by quantity) <- from rfp
                     break;
                 case -1:
                     mainMenu();
