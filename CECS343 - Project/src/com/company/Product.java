@@ -48,4 +48,8 @@ public class Product {
     public Warehouse getWarehouse() {
         return warehouse;
     }
+
+    public void addStock(int amt) {
+        this.stock += amt;
+    }
 }
