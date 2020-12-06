@@ -35,9 +35,8 @@ public class ProductDB {
         int stock;
 
         String warehousename;
-        String address;
-        String phone;
         Warehouse warehouse;
+        WarehouseDB warehouseDB = new WarehouseDB(conn);
 
         try {
             String query = "select * from products where productid = ?";
@@ -51,7 +50,13 @@ public class ProductDB {
                 sellPrice = rs.getDouble("SELLPRICE");
                 buyPrice = rs.getDouble("BUYPRICE");
                 stock = rs.getInt("STOCK");
+                warehousename = rs.getString("WAREHOUSENAME");
 
+                warehouse = warehouseDB.getPOJO(warehousename);
+
+                return new Product(resultID, productName, sellPrice, buyPrice, stock, warehouse);
+
+                /*
                 query = "select * from warehouses where warehousename = ?";
                 pStmt = conn.prepareStatement(query);
                 pStmt.setString(1, rs.getString("WAREHOUSENAME"));
@@ -63,7 +68,7 @@ public class ProductDB {
 
                     warehouse = new Warehouse(warehousename, address, phone);
                     return new Product(resultID, productName, sellPrice, buyPrice, stock, warehouse);
-                }
+                }*/
             }
 
         } catch (SQLException e) {
