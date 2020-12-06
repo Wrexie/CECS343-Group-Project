@@ -183,6 +183,10 @@ public class Invoice {
         return taxAmt;
     }
 
+    public double getCommAmount() { return commAmount; }
+
+    public boolean getIsDeliverable() {return isDeliverable;}
+
     public HashMap<Integer, Integer> getProdList() {
         return prodList;
     }

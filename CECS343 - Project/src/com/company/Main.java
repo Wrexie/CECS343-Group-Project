@@ -29,9 +29,9 @@ public class Main {
         try {
             //need to establish driver
             Class.forName(JDBC_DRIVER);
-            System.out.println("Connecting to database...");
+            //System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL);
-            System.out.println("Connection Successful!");
+            //System.out.println("Connection Successful!");
             stmt = conn.createStatement();
 
             //Main loop
