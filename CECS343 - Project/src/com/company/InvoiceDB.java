@@ -67,7 +67,7 @@ public class InvoiceDB {
                 commAmount = rs.getDouble("COMISSIONAMOUNT");
                 status = InvoiceStatus.valueOf(rs.getString("STATUS"));
 
-                //TODO: return invoice object... make invoice constructor work
+                //TODO: return invoice object... need to get products from orderdetails
                 //return new Invoice(resultID, total, remainingBalance, customerID, employeeID,
                   //      deliveryFee, isDeliverable, openedDate, thirtyDayCount, taxAmt, commAmount, status);
             }

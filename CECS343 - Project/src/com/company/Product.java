@@ -2,6 +2,7 @@ package com.company;
 
 public class Product {
 
+    private int productID;
     private String productName;
     private double sellPrice;
     private double buyPrice;
@@ -15,6 +16,15 @@ public class Product {
         this.buyPrice=buyPrice;
         this.stock=stock;
         this.warehouse=warehouse;
+    }
+
+    public Product(int productID, String productName, double sellPrice, double buyPrice, int stock, Warehouse warehouse) {
+        this.productID = productID;
+        this.productName = productName;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+        this.stock = stock;
+        this.warehouse = warehouse;
     }
 
     //todo: write setters and getters
