@@ -1,5 +1,6 @@
 package com.company;
 import java.sql.*;
+import java.time.LocalDate;
 
 public class InvoiceDB {
     private Connection conn;
@@ -30,4 +31,49 @@ public class InvoiceDB {
         }
 
     }
+/*
+    public Invoice getPOJO(int id){
+        int resultID;
+        double total;
+        double remainingBalance;
+        int customerID;
+        int employeeID;
+        double deliveryFee;
+        boolean isDeliverable;
+        LocalDate openedDate;
+        int thirtyDayCount;
+        double taxAmt;
+        double commAmount;
+        InvoiceStatus status;
+
+        try {
+            String query = "select * from invoices where invoiceid = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setInt(1, id);
+            ResultSet rs = pStmt.executeQuery();
+
+            if (rs.next()) {
+                resultID = rs.getInt("INVOICEID");
+                total = rs.getDouble("TOTAL");
+                remainingBalance = rs.getDouble("REMAININGBALANCE");
+                customerID = rs.getInt("CUSTOMERID");
+                employeeID = rs.getInt("EMPLOYEEID");
+                deliveryFee = rs.getDouble("DELIVERYFEE");
+                isDeliverable = rs.getBoolean("ISDELIVERABLE");
+                openedDate = rs.getDate("OPENDATE").toLocalDate();
+                thirtyDayCount = rs.getInt("THIRTYDAYCOUNT");
+                taxAmt = rs.getDouble("TAXAMOUNT");
+                commAmount = rs.getDouble("COMISSIONAMOUNT");
+                status = InvoiceStatus.valueOf(rs.getString("STATUS"));
+
+                //TODO: return invoice object... make invoice constructor work
+                //return new Invoice(resultID, total, remainingBalance, customerID, employeeID,
+                  //      deliveryFee, isDeliverable, openedDate, thirtyDayCount, taxAmt, commAmount, status);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 }

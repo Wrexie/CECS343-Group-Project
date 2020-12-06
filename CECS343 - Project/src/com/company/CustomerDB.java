@@ -35,17 +35,17 @@ public class CustomerDB {
         CustomerStatus status;
         double taxRate;
         try {
-            String query = "select * from customers where id = ?";
+            String query = "select * from customers where customerid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setInt(1, id);
             ResultSet rs = pStmt.executeQuery();
 
             if(rs.next()) {
-                resultID = rs.getInt("ID");
+                resultID = rs.getInt("CUSTOMERID");
                 fullName = rs.getString("FULLNAME");
                 shipAddress = rs.getString("ADDRESS");
                 status = CustomerStatus.valueOf(rs.getString("STATUS"));
-                taxRate = rs.getDouble("RATE");
+                taxRate = rs.getDouble("TAXRATE");
                 return new Customer(resultID, fullName, shipAddress, status, taxRate);
             }
 
