@@ -31,7 +31,8 @@ public class InvoiceDB {
         }
 
     }
-/*
+
+    //TODO: finish method
     public Invoice getPOJO(int id){
         int resultID;
         double total;
@@ -74,6 +75,6 @@ public class InvoiceDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }*/
+        return null;
+    }
 }

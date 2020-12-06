@@ -12,7 +12,7 @@ public class CustomerDB {
 
     public void save(Customer customer) {
         try {
-            String query = "insert into customers(fullname, address, status, taxRate) values (?, ?, ?, ?)";
+            String query = "insert into customers (fullname, address, status, taxRate) values (?, ?, ?, ?)";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setString(1, customer.getFullName());
             pStmt.setString(2, customer.getShipAddress());
