@@ -48,10 +48,11 @@ public class UI {
         // temporary value TODO: 11/28/20 needs to have the "LOGIN CONTROLLER" to process the user click
         Scanner userInput = new Scanner(System.in);
         // --------------------------------------
-        System.out.format("---------------------------\n    Main Menu\nWhat would you like to do?\n 1.Warehouse menu\n 2.Salesman menu\n 3.Customer menu\n 4.Invoice menu\n 5.Product menu\n-1.Quit\n");
+
 
         int sel = 0;
         while (sel != -1){
+            System.out.format("---------------------------\n    Main Menu\nWhat would you like to do?\n 1.Warehouse menu\n 2.Salesman menu\n 3.Customer menu\n 4.Invoice menu\n 5.Product menu\n-1.Quit\n");
             sel = getUserOption(userInput);
             switch (sel){
                 case 1:
@@ -85,8 +86,9 @@ public class UI {
      */
     private static void warehouseMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Check stock\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
+
         while (sel != -1) {
+            System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Check stock\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -117,8 +119,9 @@ public class UI {
      */
     private static void salesmanMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
+
         while (sel != -1) {
+            System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -145,8 +148,9 @@ public class UI {
      */
     private static void customerMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n-1.Return to main menu\n");
+
         while (sel != -1) {
+            System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -183,8 +187,8 @@ public class UI {
                     taxRate = userInput.nextDouble();
                     customerDB.save(new Customer(fullname, address, phone, status, taxRate));
 
-                    if(userInput.hasNext()) {
-                        userInput.next();
+                    if(userInput.hasNextLine()) {
+                        userInput.nextLine();
                     }
 
                     break;
@@ -206,8 +210,9 @@ public class UI {
      */
     private static void invoiceMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
+
         while (sel != -1) {
+            System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -237,8 +242,9 @@ public class UI {
      */
     private static void productMenu(Scanner userInput) {
         int sel = 0;
-        System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Add product\n 2.Update product\n 3.Display all products\n 4.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
+
         while (sel != -1) {
+            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Add product\n 2.Update product\n 3.Display all products\n 4.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
