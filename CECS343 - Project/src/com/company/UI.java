@@ -1,13 +1,40 @@
 package com.company;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.sql.*;
 
 public class UI {
     // for testing purpose
+    public static String DB_URL = "jdbc:derby:CECS343";
+    static final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+    static final String PRINT_FORMAT="%-25s%-25s%-25s%-25s\n";
+    static final String PRINT_FORMAT2 = "%-25s%-25s%-45s%-25s%-35s%-25s%-25s" + PRINT_FORMAT;
+    public static Connection conn;
+
     public static void main(String[] args) {
-        loginMenu();
-        mainMenu();
-    }
+        Statement stmt = null;
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL);
+            stmt = conn.createStatement();
+            loginMenu();
+            mainMenu();
+        } catch (SQLNonTransientConnectionException e) {
+            System.out.println("Connection to Database failed. (Database was not found)");
+            System.out.println("Program will exit.");
+        } catch (ClassNotFoundException ce) {
+            ce.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+        }//end try
 
     /**
      * mainMenu: Is the central hub where the user can direct a certain "action" that he/she wishes to do.
@@ -227,29 +254,49 @@ public class UI {
         Scanner userInput = new Scanner(System.in);
 
         String userName = "", password = "";
-        System.out.format("---------------------------\n    Login Menu\nUser information is not found.\nCreating user...\n");
-        while (true) {
-            System.out.format("Please enter a Username: ");
-            try {
-                userName = userInput.nextLine();
-                break;
+        UserDB userdb = new UserDB(conn);
+        User user = userdb.getPOJO("admin");
+
+        if(user == null) {
+            System.out.format("---------------------------\n    Login Menu\nUser information is not found.\nCreating user...\n");
+            while (true) {
+                System.out.format("Please enter a Username: ");
+                try {
+                    userName = userInput.nextLine();
+                    break;
+                }
+                catch (Exception e) {
+                    System.out.format("Incorrect format please try again.");
+                }
             }
-            catch (Exception e) {
-                System.out.format("Incorrect format please try again.");
+            while (true) {
+                System.out.format("Please enter a password: ");
+                try {
+                    password = userInput.nextLine();
+                    break;
+                }
+                catch (Exception e) {
+                    System.out.format("Incorrect format please try again.");
+                }
+            }
+            user = new User(userName, password);
+            System.out.format("Process complete...\nUsername: %s\nPassword: %s\n", user.getUsername(), user.getPassword());
+        }
+        else {
+            System.out.format("---------------------------\n    Login Menu\nEnter User Information Below:\nUser: admin\n");
+            while (true) {
+                System.out.format("Password: ");
+                try {
+                    password = userInput.nextLine();
+                    if(password == user.getPassword()) {
+                        break;
+                    }
+                }
+                catch (Exception e) {
+                    System.out.format("Incorrect format please try again.");
+                }
             }
         }
-        while (true) {
-            System.out.format("Please enter a password: ");
-            try {
-                password = userInput.nextLine();
-                break;
-            }
-            catch (Exception e) {
-                System.out.format("Incorrect format please try again.");
-            }
-        }
-        User user = new User(userName, password);
-        System.out.format("Process complete...\nUsername: %s\nPassword: %s\n", user.getUsername(), user.getPassword());
     }
 
 }

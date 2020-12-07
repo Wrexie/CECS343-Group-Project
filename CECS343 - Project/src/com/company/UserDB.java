@@ -6,6 +6,22 @@ public class UserDB {
 
     public UserDB(Connection conn) { this.conn = conn; }
 
+    public void save(User user) {
+        try {
+            String query = "insert into users (username, password) values (?, ?)";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setString(1, user.getUsername());
+            pStmt.setString(2, user.getPassword());
+
+            pStmt.executeUpdate();
+
+            pStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public User getPOJO(String username) {
         String resultUsername;
         String password;

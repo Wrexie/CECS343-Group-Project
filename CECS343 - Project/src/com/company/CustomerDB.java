@@ -9,7 +9,6 @@ public class CustomerDB {
         this.conn = conn;
     }
 
-
     public void save(Customer customer) {
         try {
             String query = "insert into customers (fullname, address, status, taxRate) values (?, ?, ?, ?)";
