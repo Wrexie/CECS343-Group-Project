@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class CustomerDB {
     private Connection conn;
-    static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s";
 
     public CustomerDB(Connection conn) {
         this.conn = conn;
@@ -12,12 +12,13 @@ public class CustomerDB {
 
     public void save(Customer customer) {
         try {
-            String query = "insert into customers (fullname, address, status, taxRate) values (?, ?, ?, ?)";
+            String query = "insert into customers (fullname, address, status, phone, salestax) values (?, ?, ?, ?, ?)";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setString(1, customer.getFullName());
             pStmt.setString(2, customer.getShipAddress());
             pStmt.setString(3, customer.getStatus().toString());
-            pStmt.setDouble(4, customer.getTaxRate());
+            pStmt.setString(4, customer.getPhone());
+            pStmt.setDouble(5, customer.getTaxRate());
 
             pStmt.executeUpdate();
 
@@ -34,6 +35,7 @@ public class CustomerDB {
         String shipAddress;
         CustomerStatus status;
         double taxRate;
+        String phone;
         try {
             String query = "select * from customers where customerid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
@@ -46,7 +48,8 @@ public class CustomerDB {
                 shipAddress = rs.getString("ADDRESS");
                 status = CustomerStatus.valueOf(rs.getString("STATUS"));
                 taxRate = rs.getDouble("TAXRATE");
-                return new Customer(resultID, fullName, shipAddress, status, taxRate);
+                phone = rs.getString("PHONE");
+                return new Customer(resultID, fullName, shipAddress, phone, status, taxRate);
             }
 
         } catch(SQLException e) {
@@ -79,7 +82,8 @@ public class CustomerDB {
 
             System.out.println("Customers:");
             System.out.printf(local_format, "CustomerID", "Fullname", "TaxRate",
-                    "Address", "Status", "Phone", "Email");
+                    "Address", "Status", "Phone");
+
             while(rs.next()) {
                 int customerid = rs.getInt("CUSTOMERID");
                 String fullname = rs.getString("FULLNAME");
@@ -87,10 +91,21 @@ public class CustomerDB {
                 String address = rs.getString("ADDRESS");
                 boolean status = rs.getBoolean("STATUS");
                 String phone = rs.getString("PHONE");
-                String email = rs.getString("EMAIL");
-                System.out.printf(local_format, customerid, fullname, taxrate, address, status, phone, email);
+                System.out.printf(local_format, customerid, fullname, taxrate, address, status, phone);
             }
             System.out.println("\n");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAll() {
+        try {
+            String query = "delete from customers";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            stmt.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
