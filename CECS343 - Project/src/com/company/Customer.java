@@ -5,22 +5,25 @@ public class Customer {
     private int id;
     private String fullName;
     private String shipAddress;
+    private String phone;
     private CustomerStatus status;
     private double taxRate;
 
     //use when creating new customer (ID generated in DB)
-    public Customer(String fullName, String shipAddress, CustomerStatus status, double taxRate) {
+    public Customer(String fullName, String shipAddress, String phone, CustomerStatus status, double taxRate) {
         this.fullName = fullName;
         this.shipAddress = shipAddress;
+        this.phone = phone;
         this.status = status;
         this.taxRate = taxRate;
     }
 
     //load from DB constructor
-    public Customer(int id, String fullName, String shipAddress, CustomerStatus status, double taxRate) {
+    public Customer(int id, String fullName, String shipAddress, String phone, CustomerStatus status, double taxRate) {
         this.id = id;
         this.fullName = fullName;
         this.shipAddress = shipAddress;
+        this.phone = phone;
         this.status = status;
         this.taxRate = taxRate;
     }
@@ -36,6 +39,10 @@ public class Customer {
 
     public String getShipAddress() {
         return shipAddress;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public double getTaxRate() {

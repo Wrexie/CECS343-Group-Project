@@ -151,10 +151,13 @@ public class UI {
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add customer
+                    CustomerDB customerDB = new CustomerDB(conn);
                     System.out.println("Enter customer fullname: ");
                     String fullname = userInput.nextLine();
                     System.out.println("Enter customer address: ");
                     String address = userInput.nextLine();
+                    System.out.println("Enter customer phone: ");
+                    String phone = userInput.nextLine();
                     CustomerStatus status;
                     String str;
                     while(true) {
@@ -170,9 +173,19 @@ public class UI {
                             System.out.println("Invalid. Please choose \"Active\" or \"Inactive\" status.");
                         }
                     }
-
+                    double taxRate;
                     System.out.println("Enter customer tax rate: ");
-                        double taxRate = userInput.nextDouble();
+                    while(!userInput.hasNextDouble()) {
+                        System.out.println("Invalid input. Please enter a number.");
+                        userInput.next();
+                    }
+
+                    taxRate = userInput.nextDouble();
+                    customerDB.save(new Customer(fullname, address, phone, status, taxRate));
+
+                    if(userInput.hasNext()) {
+                        userInput.next();
+                    }
 
                     break;
                 case 2:
