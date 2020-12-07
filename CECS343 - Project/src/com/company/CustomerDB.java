@@ -47,7 +47,7 @@ public class CustomerDB {
                 fullName = rs.getString("FULLNAME");
                 shipAddress = rs.getString("ADDRESS");
                 status = CustomerStatus.valueOf(rs.getString("STATUS"));
-                taxRate = rs.getDouble("TAXRATE");
+                taxRate = rs.getDouble("SALESTAX");
                 phone = rs.getString("PHONE");
                 return new Customer(resultID, fullName, shipAddress, phone, status, taxRate);
             }
@@ -60,7 +60,7 @@ public class CustomerDB {
 
     public void update(Customer customer) {
         try {
-            String query = "update customers set taxrate = ?, status = ? where customerid = ?";
+            String query = "update customers set salestax = ?, status = ? where customerid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setDouble(1, customer.getTaxRate());
             pStmt.setString(2, customer.getStatus().toString());
@@ -89,7 +89,7 @@ public class CustomerDB {
                 String fullname = rs.getString("FULLNAME");
                 double taxrate = rs.getDouble("SALESTAX");
                 String address = rs.getString("ADDRESS");
-                boolean status = rs.getBoolean("STATUS");
+                String status = rs.getString("STATUS");
                 String phone = rs.getString("PHONE");
                 System.out.printf(local_format, customerid, fullname, taxrate, address, status, phone);
                 System.out.println();
@@ -112,15 +112,4 @@ public class CustomerDB {
         }
     }
 
-    public void deleteEmail() {
-        try {
-            String query = "alter table customers drop column email";
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate(query);
-            stmt.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
