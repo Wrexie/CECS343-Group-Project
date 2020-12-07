@@ -187,6 +187,8 @@ public class UI {
                     taxRate = userInput.nextDouble();
                     customerDB.save(new Customer(fullname, address, phone, status, taxRate));
 
+                    customerDB.printAll();
+
                     if(userInput.hasNextLine()) {
                         userInput.nextLine();
                     }

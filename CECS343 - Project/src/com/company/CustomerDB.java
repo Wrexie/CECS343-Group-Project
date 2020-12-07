@@ -110,4 +110,16 @@ public class CustomerDB {
             e.printStackTrace();
         }
     }
+
+    public void deleteEmail() {
+        try {
+            String query = "alter table customers drop column email";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            stmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
