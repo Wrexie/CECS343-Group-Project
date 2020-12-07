@@ -27,7 +27,9 @@ public class UI {
             ce.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        } try {
+        } finally {
+            try {
+                System.out.println("Closes");
                 if (conn != null) {
                     conn.close();
                 }
@@ -35,6 +37,9 @@ public class UI {
                 se.printStackTrace();
             }//end finally try
         }//end try
+        }
+
+
 
     /**
      * mainMenu: Is the central hub where the user can direct a certain "action" that he/she wishes to do.
@@ -146,6 +151,29 @@ public class UI {
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add customer
+                    System.out.println("Enter customer fullname: ");
+                    String fullname = userInput.nextLine();
+                    System.out.println("Enter customer address: ");
+                    String address = userInput.nextLine();
+                    CustomerStatus status;
+                    String str;
+                    while(true) {
+                        System.out.println("Enter customer status: ");
+                        str = userInput.nextLine();
+                        if(str.equalsIgnoreCase("ACTIVE")) {
+                            status = CustomerStatus.ACTIVE;
+                            break;
+                        } else if(str.equalsIgnoreCase("INACTIVE")) {
+                            status = CustomerStatus.INACTIVE;
+                            break;
+                        } else {
+                            System.out.println("Invalid. Please choose \"Active\" or \"Inactive\" status.");
+                        }
+                    }
+
+                    System.out.println("Enter customer tax rate: ");
+                        double taxRate = userInput.nextDouble();
+
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update customer
