@@ -207,37 +207,42 @@ public class UI {
                     }
                     int updateChoice = userInput.nextInt();
                     Customer old = customerDB.getPOJO(customerid);
-                    switch(updateChoice) {
-                        case 1:
-                            while(true) {
-                                System.out.println("Enter the new status for the customer: ");
-                                String updatedStatus = userInput.next();
-                                if(updatedStatus.equalsIgnoreCase("ACTIVE")) {
-                                    status = CustomerStatus.ACTIVE;
-                                    break;
-                                } else if(updatedStatus.equalsIgnoreCase("INACTIVE")) {
-                                    status = CustomerStatus.INACTIVE;
-                                    break;
-                                } else {
-                                    System.out.println("Invalid. Please choose \"Active\" or \"Inactive\" status.");
+                    if(old == null) {
+                        System.out.println("Customer does not exist in the database or no customers have been added yet.");
+                    }
+                    else {
+                        switch(updateChoice) {
+                            case 1:
+                                while(true) {
+                                    System.out.println("Enter the new status for the customer: ");
+                                    String updatedStatus = userInput.next();
+                                    if(updatedStatus.equalsIgnoreCase("ACTIVE")) {
+                                        status = CustomerStatus.ACTIVE;
+                                        break;
+                                    } else if(updatedStatus.equalsIgnoreCase("INACTIVE")) {
+                                        status = CustomerStatus.INACTIVE;
+                                        break;
+                                    } else {
+                                        System.out.println("Invalid. Please choose \"Active\" or \"Inactive\" status.");
+                                    }
                                 }
-                            }
-                            old.setStatus(status);
-                            customerDB.update(old);
-                            break;
+                                old.setStatus(status);
+                                customerDB.update(old);
+                                break;
 
-                        case 2:
-                            System.out.println("Enter the new tax rate for the customer: ");
-                            while(!userInput.hasNextDouble()) {
-                                System.out.println("Invalid input. Please enter a number.");
-                                userInput.next();
-                            }
+                            case 2:
+                                System.out.println("Enter the new tax rate for the customer: ");
+                                while(!userInput.hasNextDouble()) {
+                                    System.out.println("Invalid input. Please enter a number.");
+                                    userInput.next();
+                                }
 
-                            taxRate = userInput.nextDouble();
-                            old.setTaxRate(taxRate);
-                            customerDB.update(old);
-                            break;
-                            
+                                taxRate = userInput.nextDouble();
+                                old.setTaxRate(taxRate);
+                                customerDB.update(old);
+                                break;
+
+                        }
                     }
                     break;
                 case 3:
