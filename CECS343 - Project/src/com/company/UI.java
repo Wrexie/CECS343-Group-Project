@@ -105,7 +105,6 @@ public class UI {
                     // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -134,7 +133,6 @@ public class UI {
                     // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -148,14 +146,13 @@ public class UI {
      */
     private static void customerMenu(Scanner userInput) {
         int sel = 0;
-
+        CustomerDB customerDB = new CustomerDB(conn);
         while (sel != -1) {
-            System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n 3.Display all customers\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    // TODO: 11/26/20 Redirected the user to add customer
-                    CustomerDB customerDB = new CustomerDB(conn);
+
                     System.out.println("Enter customer fullname: ");
                     String fullname = userInput.nextLine();
                     System.out.println("Enter customer address: ");
@@ -187,8 +184,6 @@ public class UI {
                     taxRate = userInput.nextDouble();
                     customerDB.save(new Customer(fullname, address, phone, status, taxRate));
 
-                    customerDB.printAll();
-
                     if(userInput.hasNextLine()) {
                         userInput.nextLine();
                     }
@@ -197,8 +192,10 @@ public class UI {
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update customer
                     break;
+                case 3:
+                    customerDB.printAll();
+                    break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -230,7 +227,6 @@ public class UI {
                     // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -265,7 +261,6 @@ public class UI {
                     //  (sorted in increasing order by quantity) <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
