@@ -83,7 +83,7 @@ public class CustomerDB {
             System.out.println("Customers:");
             System.out.printf(local_format, "CustomerID", "Fullname", "TaxRate",
                     "Address", "Status", "Phone");
-
+            System.out.println();
             while(rs.next()) {
                 int customerid = rs.getInt("CUSTOMERID");
                 String fullname = rs.getString("FULLNAME");
@@ -92,6 +92,7 @@ public class CustomerDB {
                 boolean status = rs.getBoolean("STATUS");
                 String phone = rs.getString("PHONE");
                 System.out.printf(local_format, customerid, fullname, taxrate, address, status, phone);
+                System.out.println();
             }
             System.out.println("\n");
         } catch (SQLException e) {
