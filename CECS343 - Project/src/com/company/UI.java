@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class UI {
     // for testing purpose
-    public static String DB_URL = "jdbc:derby:CECS343";
+    public static String DB_URL = "jdbc:derby:CECS343DB";
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     static final String PRINT_FORMAT="%-25s%-25s%-25s%-25s\n";
     static final String PRINT_FORMAT2 = "%-25s%-25s%-45s%-25s%-35s%-25s%-25s" + PRINT_FORMAT;
@@ -37,7 +37,7 @@ public class UI {
                 se.printStackTrace();
             }//end finally try
         }//end try
-        }
+    }
 
 
 
