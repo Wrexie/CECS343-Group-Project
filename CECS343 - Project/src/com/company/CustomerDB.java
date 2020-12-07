@@ -89,7 +89,7 @@ public class CustomerDB {
                 String fullname = rs.getString("FULLNAME");
                 double taxrate = rs.getDouble("SALESTAX");
                 String address = rs.getString("ADDRESS");
-                boolean status = rs.getBoolean("STATUS");
+                String status =rs.getString("STATUS");
                 String phone = rs.getString("PHONE");
                 System.out.printf(local_format, customerid, fullname, taxrate, address, status, phone);
                 System.out.println();
