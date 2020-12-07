@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Sun Dec 06 20:12:07 PST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-3b66-47df-00000f7bede8 
-on database directory C:\Users\Andrew\Documents\GitHub\CECS343-Group-Project\CECS343 - Project\CECS343 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@3764951d 
-Loaded from file:/C:/Users/Andrew/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+Sun Dec 06 20:44:55 PST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-3b84-4d02-00000f68d590 
+on database directory C:\Users\Rith\Documents\GitHub\CECS343-Group-Project\CECS343 - Project\CECS343 with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@77556fd 
+Loaded from file:/C:/Users/Rith/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
-java.runtime.version=15+36-1562
-user.dir=C:\Users\Andrew\Documents\GitHub\CECS343-Group-Project\CECS343 - Project
+java.runtime.version=11.0.2+9-LTS
+user.dir=C:\Users\Rith\Documents\GitHub\CECS343-Group-Project\CECS343 - Project
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

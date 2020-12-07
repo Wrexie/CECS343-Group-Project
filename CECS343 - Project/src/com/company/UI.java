@@ -280,6 +280,7 @@ public class UI {
                 }
             }
             user = new User(userName, password);
+            userdb.save(user);
             System.out.format("Process complete...\nUsername: %s\nPassword: %s\n", user.getUsername(), user.getPassword());
         }
         else {
@@ -288,7 +289,7 @@ public class UI {
                 System.out.format("Password: ");
                 try {
                     password = userInput.nextLine();
-                    if(password == user.getPassword()) {
+                    if(password.equalsIgnoreCase(user.getPassword())) {
                         break;
                     }
                 }
