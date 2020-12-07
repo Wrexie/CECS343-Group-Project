@@ -105,7 +105,6 @@ public class UI {
                     // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -134,7 +133,6 @@ public class UI {
                     // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -198,7 +196,6 @@ public class UI {
                     // TODO: 11/26/20 Redirected the user to update customer
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -230,7 +227,6 @@ public class UI {
                     // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
@@ -265,7 +261,6 @@ public class UI {
                     //  (sorted in increasing order by quantity) <- from rfp
                     break;
                 case -1:
-                    mainMenu();
                     break;
                 default:
                     System.out.format("Incorrect option \n");
