@@ -16,7 +16,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="windows-1252" />
+      <charset value="UTF-8" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -67,7 +67,7 @@
           <config-type value="CUSTOM" />
           <database-version value="8.0" />
           <driver-source value="EXTERNAL" />
-          <driver-library value="C:\Users\Andrew\.m2\repository\org\apache\derby\derby\10.14.2.0\derby-10.14.2.0.jar" />
+          <driver-library value="$PROJECT_DIR$/C:/Users/Andrew/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar" />
           <driver value="org.apache.derby.jdbc.EmbeddedDriver" />
           <url value="jdbc:derby:testdb" />
           <type value="NONE" />
@@ -268,14 +268,24 @@
           <content-type name="DTD" enabled="true" />
           <content-type name="HTML" enabled="true" />
           <content-type name="XHTML" enabled="true" />
+          <content-type name="CSS" enabled="true" />
           <content-type name="Java" enabled="true" />
           <content-type name="SQL" enabled="true" />
           <content-type name="PL/SQL" enabled="true" />
+          <content-type name="JavaScript" enabled="true" />
           <content-type name="JSON" enabled="true" />
           <content-type name="JSON5" enabled="true" />
+          <content-type name="JSP" enabled="true" />
+          <content-type name="JSPx" enabled="true" />
           <content-type name="Groovy" enabled="true" />
+          <content-type name="FTL" enabled="true" />
+          <content-type name="TML" enabled="true" />
+          <content-type name="GSP" enabled="true" />
+          <content-type name="ASP" enabled="true" />
+          <content-type name="VTL" enabled="true" />
           <content-type name="AIDL" enabled="true" />
           <content-type name="YAML" enabled="true" />
+          <content-type name="Flex" enabled="true" />
           <content-type name="Manifest" enabled="true" />
         </content-types>
       </qualified-text-editor>
