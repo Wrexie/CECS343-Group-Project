@@ -253,22 +253,13 @@ public class UI {
         // for testing purpose
         Scanner userInput = new Scanner(System.in);
 
-        String userName = "", password = "";
+        String userName = "admin", password = "";
         UserDB userdb = new UserDB(conn);
         User user = userdb.getPOJO("admin");
 
         if(user == null) {
             System.out.format("---------------------------\n    Login Menu\nUser information is not found.\nCreating user...\n");
-            while (true) {
-                System.out.format("Please enter a Username: ");
-                try {
-                    userName = userInput.nextLine();
-                    break;
-                }
-                catch (Exception e) {
-                    System.out.format("Incorrect format please try again.");
-                }
-            }
+            System.out.println("Username: admin");
             while (true) {
                 System.out.format("Please enter a password: ");
                 try {
