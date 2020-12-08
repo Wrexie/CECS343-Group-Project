@@ -11,6 +11,7 @@ public class Invoice {
     private static final int DAYS_FOR_DISCOUNT = 10;
     private static final double INTEREST_RATE = 0.02;
 
+    private int invoiceID;
     private double total;
     private double deliveryFee;
     private double taxAmt;
@@ -63,7 +64,8 @@ public class Invoice {
     }
 
     //constructor for loading a customer from database for use
-    public Invoice(double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList, InvoiceStatus status) {
+    public Invoice(int invoiceID, double total, double owed, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList, InvoiceStatus status) {
+        this.invoiceID = invoiceID;
         this.total = total;
         this.owed = owed;
         this.taxAmt = total*customer.getTaxRate();
@@ -161,6 +163,8 @@ public class Invoice {
 
         }
     }
+
+    public int getInvoiceID() { return invoiceID; }
 
     public InvoiceStatus getStatus() {
         return status;
