@@ -49,7 +49,7 @@ public class Invoice {
     }
 
     //constructor for adding a new paid invoice
-    public Invoice(double total, boolean isDeliverable, double deliveryFee, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList) {
+    public Invoice(double total, boolean isDeliverable, double deliveryFee, LocalDate openedDate, Customer customer, Employee employee) {
         this.total = total;
         this.owed = 0;
         this.commAmount = total*employee.getCommRate();
@@ -57,9 +57,8 @@ public class Invoice {
         this.isDeliverable = isDeliverable;
         this.deliveryFee = deliveryFee;
         this.customer = customer;
-        this.prodList = prodList;
         this.status = InvoiceStatus.PAID;
-        this.thirtyDayCount = 0;
+        this.thirtyDayCount = (int) DAYS.between(openedDate, LocalDate.now()) / 30;
         this.openedDate = openedDate;
         this.employee = employee;
     }
@@ -81,27 +80,28 @@ public class Invoice {
     }
 
 
-    public void addProduct(Product product, int quantity) { //change String to product
-        //todo: query to see if it product exists
+    public Product addProduct(Product product, int quantity) {
         if(status.equals(InvoiceStatus.UNPAID)) {
 
             if(product.getStock()-quantity >= 0) { //check stock of prod before adding
+                prodList.put(product.getProductID(), quantity);
                 for(int i = 0; i < quantity; i++) {
-                    prodList.put(product.getProductID(), quantity);
                     owed += product.getSellPrice()*customer.getTaxRate();
                     total += product.getSellPrice()*customer.getTaxRate();
                     commAmount += product.getSellPrice()*employee.getCommRate();
                 }
                 taxAmt = total*customer.getTaxRate();
+                return product;
             } else {
 
             System.out.println("Not enough stock! Aborted.");
             }
 
-
+        } else {
+            prodList.put(product.getProductID(), quantity);
         }
 
-
+        return null;
     }
 
     public void makePayment(double value) {
@@ -124,7 +124,7 @@ public class Invoice {
 
 
     /*
-        Called from within the UI on Invoices with UNPAID status.
+        Called from within the DB on Invoices with UNPAID status.
         (Should be called everytime at the beginning of the menu loop)
         Checks whether or not 2% should be added to total
      */
