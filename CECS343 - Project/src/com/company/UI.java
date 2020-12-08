@@ -293,7 +293,7 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Make Payment\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
 
             sel = getUserOption(userInput);
             switch (sel) {
@@ -403,20 +403,25 @@ public class UI {
                     //invoiceDB.printAll();
                     int id;
                     Invoice update;
-                    System.out.println("\nEnter the ID for the invoice you would like to update: ");
+                    System.out.println("\nEnter the ID for the invoice: ");
                     id = validateInt(userInput);
                     update = invoiceDB.getPOJO(id);
                     if(update == null) {
                         System.out.println("Customer does not exist in the database or no customers have been added yet.");
                     } else {
-                        System.out.println("What would you like to update for the invoice?\n1. Status\n2. Make a Payment");
+                        System.out.println("Enter payment amount: ");
+                        double payment = validateDouble(userInput);
+                        update.makePayment(payment);
+                        //invoiceDB.update(update); //todo: waiting for invoiceDB update method
                     }
                     break;
                 case 3:
                     // TODO: 12/4/20  Display invoices are open sorted in increasing order of invoice date. <- from rfp
+                    //invoiceDB.getUnpaid();
                     break;
                 case 4:
                     // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
+                    //invoiceDB.getPaid();
                     break;
                 case -1:
                     break;
@@ -451,7 +456,7 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Add product\n 2.Update product\n 3.Display all products\n 4.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Display all products\n 2.Display products that have 5 or fewer stock\n -1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
