@@ -132,7 +132,8 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman" +
+                    "\n 2.Update salesman\n 3.Display all total sales and commissions\n 4.Display all employees\n -1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -157,12 +158,38 @@ public class UI {
 
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update warehouse
+                    // TODO: 11/26/20 Redirected the user to update employee
+                    employeeDB.printAll();
+                    System.out.println("Enter the ID for the employee you would like to update: ");
+
+                    while(!userInput.hasNextInt()) {
+                        System.out.println("Invalid input. Please enter a number.");
+                        userInput.next();
+                    }
+                    int employeeid = userInput.nextInt();
+                    Employee employee = employeeDB.getPOJO(employeeid);
+
+                    System.out.println("Enter the new commission rate for the employee: ");
+                    double newCommRate = userInput.nextDouble();
+
+                    if(employee == null) {
+                        System.out.println("The employee selected does not exist in the database or the database " +
+                                "does not contain any employees.");
+                    }
+                    else {
+                        employee.setCommRate(newCommRate);
+                        employeeDB.update(employee);
+                    }
 
                     break;
                 case 3:
                     // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
                     break;
+
+                case 4:
+                    employeeDB.printAll();
+                    break;
+
                 case -1:
                     break;
                 default:
@@ -178,7 +205,8 @@ public class UI {
     private static void customerMenu(Scanner userInput) {
         int sel = 0;
         while (sel != -1) {
-            System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n 3.Display all customers\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?" +
+                    "\n 1.Add customer\n 2.Update customer\n 3.Display all customers\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
