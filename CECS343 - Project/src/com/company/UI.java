@@ -298,13 +298,25 @@ public class UI {
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    // TODO: 11/26/20 Redirected the user to add invoice
                     String str;
+                    Invoice invoice;
+                    double total = 0;
+                    LocalDate opened = null;
                     while(true) {
                         System.out.println("Would you like to create a PAID invoice or UNPAID");
                         str = userInput.nextLine();
                         if(str.equalsIgnoreCase("PAID")) {
                             str = InvoiceStatus.PAID.toString();
+                            System.out.println("Enter invoice total $: ");
+                            total = validateDouble(userInput);
+                            System.out.println("Enter the date for the invoice.");
+                            System.out.println("Enter Year (yyyy):");
+                            int year = validateInt(userInput);
+                            System.out.println("Enter Month (mm):");
+                            int month = validateInt(userInput);
+                            System.out.println("Enter Day (dd):");
+                            int days = validateInt(userInput);
+                            opened = LocalDate.of(year, month, days);
                             break;
                         } else if(str.equalsIgnoreCase("UNPAID")) {
                             str = InvoiceStatus.UNPAID.toString();
@@ -314,34 +326,14 @@ public class UI {
                         }
                     }
 
-                    if(str.equalsIgnoreCase("PAID")) {
-                        System.out.println("Please enter all the information required for a PAID invoice");
-                        System.out.println("Enter invoice total $: ");
-                        double total;
-                        boolean isDeliverable;
-                        double deliveryFee;
-                        while(!userInput.hasNextDouble()) {
-                            System.out.println("Invalid input. Please enter a number.");
-                            userInput.next();
-                        }
 
-                        total = userInput.nextDouble();
-
-
-                    } else if(str.equalsIgnoreCase("UNPAID")) {
                         double deliveryFee;
                         boolean isDeliverable;
                         LocalDate date = LocalDate.now();
                         Customer customer;
                         Employee employee;
-                        System.out.println("Please enter all the information required for an UNPAID invoice");
                         System.out.println("Enter delivery fee (0 if no delivery): ");
-                        while(!userInput.hasNextDouble()) {
-                            System.out.println("Invalid input. Please enter a number.");
-                            userInput.next();
-                        }
-
-                        deliveryFee = userInput.nextDouble();
+                        deliveryFee = validateDouble(userInput);
 
                         if(deliveryFee == 0) {
                             isDeliverable = false;
@@ -368,16 +360,57 @@ public class UI {
                                 break;
                             }
                         }
-                        Invoice unpaid = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
+
+                        if(str.equalsIgnoreCase("UNPAID")) {
+                            invoice = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
+                        } else if(str.equalsIgnoreCase("PAID")){
+                            invoice = new Invoice(total, isDeliverable, deliveryFee, opened, customer, employee);
+                        } else {
+                            invoice = null;
+                        }
+
+                        //todo: list all products ??
+                        int productSel = 0;
+                        Product product;
+                        while(invoice != null && productSel != -1) {
+                            System.out.println("Enter product ID to add to invoice (-1 to exit): ");
+                            productSel = validateInt(userInput);
+
+                            if(productSel != -1) {
+                                product = productDB.getPOJO(productSel);
+                                if(product == null) {
+                                    System.out.println("Product could not be found or does not exist.");
+                                } else {
+                                    System.out.println("Enter quantity:");
+                                    int quantity = validateInt(userInput);
+                                    product = invoice.addProduct(product, quantity);
+                                    productDB.save(product);
+                                }
+
+                            }
+                        }
+
+                        System.out.println("Saving invoice...");
+                        if(invoice == null) {
+
+                            invoiceDB.save(invoice);
+                        }
 
 
-
-                    } else {
-                        System.out.println("Something went wrong. Please try again.");
-                    }
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update invoice
+                    //invoiceDB.printAll();
+                    int id;
+                    Invoice update;
+                    System.out.println("\nEnter the ID for the invoice you would like to update: ");
+                    id = validateInt(userInput);
+                    update = invoiceDB.getPOJO(id);
+                    if(update == null) {
+                        System.out.println("Customer does not exist in the database or no customers have been added yet.");
+                    } else {
+                        System.out.println("What would you like to update for the invoice?\n1. Status\n2. Make a Payment");
+                    }
                     break;
                 case 3:
                     // TODO: 12/4/20  Display invoices are open sorted in increasing order of invoice date. <- from rfp
