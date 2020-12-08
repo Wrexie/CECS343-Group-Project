@@ -14,7 +14,7 @@ public class Invoice {
     private double total;
     private double deliveryFee;
     private double taxAmt;
-    private double commAmount; // todo: make sure commAmount works right
+    private double commAmount;
     private double owed;
     private int thirtyDayCount; //saves number of 30 day cycle's has passed (probably don't display to user in UI)
     private boolean isDeliverable;
@@ -79,24 +79,23 @@ public class Invoice {
     }
 
 
-    //TODO: have this work for product objects
-    public void addProduct(String product, int quantity) { //change String to product
+    public void addProduct(Product product, int quantity) { //change String to product
         //todo: query to see if it product exists
         if(status.equals(InvoiceStatus.UNPAID)) {
-            //todo: change to integrate with HashMaps (save quantity value)
-            /*if(product.getQuantity()-quantity >= 0) { //check stock of prod before adding
+
+            if(product.getStock()-quantity >= 0) { //check stock of prod before adding
                 for(int i = 0; i < quantity; i++) {
-                    prodList.add(product);
-                    //owed += product.getPrice();
-                    //total += product.getPrice();
-                    //commAmount =
+                    prodList.put(product.getProductID(), quantity);
+                    owed += product.getSellPrice()*customer.getTaxRate();
+                    total += product.getSellPrice()*customer.getTaxRate();
+                    commAmount += product.getSellPrice()*employee.getCommRate();
                 }
                 taxAmt = total*customer.getTaxRate();
             } else {
 
             System.out.println("Not enough stock! Aborted.");
             }
-            */
+
 
         }
 
@@ -199,7 +198,7 @@ public class Invoice {
         return thirtyDayCount;
     }
 
-    public Customer getCustomer() { //todo: change to customer obj
+    public Customer getCustomer() {
         return customer;
     }
 

@@ -28,6 +28,9 @@ public class Product {
     }
 
     //todo: write setters and getters
+    public int getProductID() {
+        return productID;
+    }
     public void setProductName(String productName) {
         this.productName = productName;
     }
