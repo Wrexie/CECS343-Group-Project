@@ -26,7 +26,7 @@ public class Invoice {
 
 
     //constructor for adding an unpaid invoice
-    public Invoice(boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee) throws IllegalArgumentException{
+    public Invoice(boolean isDeliverable, double deliveryFee, LocalDate openedDate, Customer customer, Employee employee) throws IllegalArgumentException{
 
         if(customer.getStatus().equals(CustomerStatus.SUSPENDED)) {
             throw new IllegalArgumentException("Cannot make unpaid invoice for suspended customer.");
@@ -48,7 +48,7 @@ public class Invoice {
     }
 
     //constructor for adding a new paid invoice
-    public Invoice(double total, boolean isDeliverable, double deliveryFee, int thirtyDayCount, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList) {
+    public Invoice(double total, boolean isDeliverable, double deliveryFee, LocalDate openedDate, Customer customer, Employee employee, HashMap<Integer, Integer> prodList) {
         this.total = total;
         this.owed = 0;
         this.commAmount = total*employee.getCommRate();
@@ -58,7 +58,7 @@ public class Invoice {
         this.customer = customer;
         this.prodList = prodList;
         this.status = InvoiceStatus.PAID;
-        this.thirtyDayCount = thirtyDayCount;
+        this.thirtyDayCount = 0;
         this.openedDate = openedDate;
         this.employee = employee;
     }

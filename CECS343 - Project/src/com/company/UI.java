@@ -1,5 +1,6 @@
 package com.company;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.sql.*;
@@ -11,6 +12,11 @@ public class UI {
     static final String PRINT_FORMAT="%-25s%-25s%-25s%-25s\n";
     static final String PRINT_FORMAT2 = "%-25s%-25s%-45s%-25s%-35s%-25s%-25s" + PRINT_FORMAT;
     public static Connection conn;
+    private static CustomerDB customerDB;
+    private static EmployeeDB employeeDB;
+    private static InvoiceDB invoiceDB;
+    private static WarehouseDB warehouseDB;
+    private static ProductDB productDB;
 
     public static void main(String[] args) {
         Statement stmt = null;
@@ -19,6 +25,11 @@ public class UI {
             conn = DriverManager.getConnection(DB_URL);
             stmt = conn.createStatement();
             loginMenu();
+             customerDB = new CustomerDB(conn);
+             employeeDB = new EmployeeDB(conn);
+             invoiceDB = new InvoiceDB(conn);
+             warehouseDB = new WarehouseDB(conn);
+             productDB = new ProductDB(conn);
             mainMenu();
         } catch (SQLNonTransientConnectionException e) {
             System.out.println("Connection to Database failed. (Database was not found)");
@@ -118,7 +129,6 @@ public class UI {
      */
     private static void salesmanMenu(Scanner userInput) {
         int sel = 0;
-        EmployeeDB employeeDB = new EmployeeDB(conn);
 
         while (sel != -1) {
             System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
@@ -166,7 +176,6 @@ public class UI {
      */
     private static void customerMenu(Scanner userInput) {
         int sel = 0;
-        CustomerDB customerDB = new CustomerDB(conn);
         while (sel != -1) {
             System.out.format("---------------------------\n    Customer Menu\nWhat would you like to do?\n 1.Add customer\n 2.Update customer\n 3.Display all customers\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
@@ -285,10 +294,87 @@ public class UI {
 
         while (sel != -1) {
             System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Update invoice\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
+
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add invoice
+                    String str;
+                    while(true) {
+                        System.out.println("Would you like to create a PAID invoice or UNPAID");
+                        str = userInput.nextLine();
+                        if(str.equalsIgnoreCase("PAID")) {
+                            str = InvoiceStatus.PAID.toString();
+                            break;
+                        } else if(str.equalsIgnoreCase("UNPAID")) {
+                            str = InvoiceStatus.UNPAID.toString();
+                            break;
+                        } else {
+                            System.out.println("Invalid. Please choose \"PAID\" or \"UNPAID\" invoice.");
+                        }
+                    }
+
+                    if(str.equalsIgnoreCase("PAID")) {
+                        System.out.println("Please enter all the information required for a PAID invoice");
+                        System.out.println("Enter invoice total $: ");
+                        double total;
+                        boolean isDeliverable;
+                        double deliveryFee;
+                        while(!userInput.hasNextDouble()) {
+                            System.out.println("Invalid input. Please enter a number.");
+                            userInput.next();
+                        }
+
+                        total = userInput.nextDouble();
+
+
+                    } else if(str.equalsIgnoreCase("UNPAID")) {
+                        double deliveryFee;
+                        boolean isDeliverable;
+                        LocalDate date = LocalDate.now();
+                        Customer customer;
+                        Employee employee;
+                        System.out.println("Please enter all the information required for an UNPAID invoice");
+                        System.out.println("Enter delivery fee (0 if no delivery): ");
+                        while(!userInput.hasNextDouble()) {
+                            System.out.println("Invalid input. Please enter a number.");
+                            userInput.next();
+                        }
+
+                        deliveryFee = userInput.nextDouble();
+
+                        if(deliveryFee == 0) {
+                            isDeliverable = false;
+                        } else {
+                            isDeliverable = true;
+                        }
+
+                        while(true) {
+                            System.out.println("Enter the ID of the customer: ");
+                            customer = customerDB.getPOJO(validateInt(userInput));
+                            if (customer == null) {
+                                System.out.println("Customer was not found. Try again");
+                            } else {
+                                break;
+                            }
+                        }
+
+                        while(true) {
+                            System.out.println("Enter ID of salesperson: ");
+                            employee = employeeDB.getPOJO(validateInt(userInput));
+                            if(employee == null) {
+                                System.out.println("Salesperson was not found. Try again");
+                            } else {
+                                break;
+                            }
+                        }
+                        Invoice unpaid = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
+
+
+
+                    } else {
+                        System.out.println("Something went wrong. Please try again.");
+                    }
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update invoice
@@ -307,6 +393,23 @@ public class UI {
         }
     }
 
+    private static double validateDouble(Scanner userInput) {
+        while(!userInput.hasNextDouble()) {
+            System.out.println("Invalid input. Please enter a number.");
+            userInput.next();
+        }
+
+        return userInput.nextDouble();
+    }
+
+    private static int validateInt(Scanner userInput) {
+        while(!userInput.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a number.");
+            userInput.next();
+        }
+
+        return userInput.nextInt();
+    }
     /**
      * productMenu: The central hub for the product.
      * @param userInput acts as the user "actions" as it determine where the UI should go to next
