@@ -24,12 +24,13 @@ public class UI {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL);
             stmt = conn.createStatement();
+
             loginMenu();
-             customerDB = new CustomerDB(conn);
-             employeeDB = new EmployeeDB(conn);
-             invoiceDB = new InvoiceDB(conn);
-             warehouseDB = new WarehouseDB(conn);
-             productDB = new ProductDB(conn);
+            customerDB = new CustomerDB(conn);
+            employeeDB = new EmployeeDB(conn);
+            invoiceDB = new InvoiceDB(conn);
+            warehouseDB = new WarehouseDB(conn);
+            productDB = new ProductDB(conn);
             mainMenu();
         } catch (SQLNonTransientConnectionException e) {
             System.out.println("Connection to Database failed. (Database was not found)");
