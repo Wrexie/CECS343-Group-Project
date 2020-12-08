@@ -1,6 +1,7 @@
 package com.company;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class InvoiceDB {
     private Connection conn;
@@ -32,9 +33,8 @@ public class InvoiceDB {
 
     }
 
-    //TODO: finish method
     public Invoice getPOJO(int id){
-        int resultID;
+        int resultID = 0;
         double total;
         double remainingBalance;
         int customerID;
@@ -46,6 +46,13 @@ public class InvoiceDB {
         double taxAmt;
         double commAmount;
         InvoiceStatus status;
+        HashMap<Integer, Integer> prodList = new HashMap<Integer, Integer>();
+        int productID;
+        int quantityOrdered;
+        Customer customer;
+        Employee employee;
+        CustomerDB customerdb = new CustomerDB(conn);
+        EmployeeDB employeedb = new EmployeeDB(conn);
 
         try {
             String query = "select * from invoices where invoiceid = ?";
@@ -53,7 +60,7 @@ public class InvoiceDB {
             pStmt.setInt(1, id);
             ResultSet rs = pStmt.executeQuery();
 
-            if (rs.next()) {
+            if(rs.next()) {
                 resultID = rs.getInt("INVOICEID");
                 total = rs.getDouble("TOTAL");
                 remainingBalance = rs.getDouble("REMAININGBALANCE");
@@ -67,10 +74,24 @@ public class InvoiceDB {
                 commAmount = rs.getDouble("COMISSIONAMOUNT");
                 status = InvoiceStatus.valueOf(rs.getString("STATUS"));
 
-                //TODO: return invoice object... need to get products from orderdetails
-                //return new Invoice(resultID, total, remainingBalance, customerID, employeeID,
-                  //      deliveryFee, isDeliverable, openedDate, thirtyDayCount, taxAmt, commAmount, status);
+                customer = customerdb.getPOJO(customerID);
+                employee = employeedb.getPOJO(employeeID);
+
+                query = "select productid, quantityinstock from orderdetails where invoiceid = ?";
+                pStmt = conn.prepareStatement(query);
+                pStmt.setInt(1, resultID);
+                rs = pStmt.executeQuery();
+                while(rs.next()) {
+                    productID = rs.getInt("PRODUCTID");
+                    quantityOrdered = rs.getInt("QUANTITYORDERED");
+                    prodList.put(productID, quantityOrdered);
+                }
+                return new Invoice(total, remainingBalance, isDeliverable, deliveryFee, thirtyDayCount, openedDate, customer, employee, prodList, status);
             }
+
+
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
