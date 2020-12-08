@@ -322,38 +322,53 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?\n 1.Add invoice\n 2.Make Payment\n 3.Display open invoices\n 4.Display closed invoices\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?" +
+                    "\n 1.Add invoice\n 2.Make Payment\n 3.Display open invoices\n 4.Display closed invoices" +
+                    "\n 5.Display all invoices\n -1.Return to main menu\n");
 
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    String str;
-                    Invoice invoice;
-                    double total = 0;
-                    LocalDate opened = null;
-                    while(true) {
-                        System.out.println("Would you like to create a PAID invoice or UNPAID");
-                        str = userInput.nextLine();
-                        if(str.equalsIgnoreCase("PAID")) {
-                            str = InvoiceStatus.PAID.toString();
-                            System.out.println("Enter invoice total $: ");
-                            total = validateDouble(userInput);
-                            System.out.println("Enter the date for the invoice.");
-                            System.out.println("Enter Year (yyyy):");
-                            int year = validateInt(userInput);
-                            System.out.println("Enter Month (mm):");
-                            int month = validateInt(userInput);
-                            System.out.println("Enter Day (dd):");
-                            int days = validateInt(userInput);
-                            opened = LocalDate.of(year, month, days);
-                            break;
-                        } else if(str.equalsIgnoreCase("UNPAID")) {
-                            str = InvoiceStatus.UNPAID.toString();
-                            break;
-                        } else {
-                            System.out.println("Invalid. Please choose \"PAID\" or \"UNPAID\" invoice.");
-                        }
+                    if(customerDB.isEmpty()) {
+                        System.out.println("No customers have been added to the database. Please add a customer" +
+                                " and try again.");
                     }
+                    if(employeeDB.isEmpty()) {
+                        System.out.println("No employees have been added to the database. Please add an employee" +
+                                " and try again.");
+                    }
+                    if(productDB.isEmpty()) {
+                        System.out.println("No products have been added to the database. Please add a product" +
+                                " and try again.");
+                    }
+                    else {
+                        String str;
+                        Invoice invoice;
+                        double total = 0;
+                        LocalDate opened = null;
+                        while(true) {
+                            System.out.println("Would you like to create a PAID invoice or UNPAID");
+                            str = userInput.nextLine();
+                            if(str.equalsIgnoreCase("PAID")) {
+                                str = InvoiceStatus.PAID.toString();
+                                System.out.println("Enter invoice total $: ");
+                                total = validateDouble(userInput);
+                                System.out.println("Enter the date for the invoice.");
+                                System.out.println("Enter Year (yyyy):");
+                                int year = validateInt(userInput);
+                                System.out.println("Enter Month (mm):");
+                                int month = validateInt(userInput);
+                                System.out.println("Enter Day (dd):");
+                                int days = validateInt(userInput);
+                                opened = LocalDate.of(year, month, days);
+                                break;
+                            } else if(str.equalsIgnoreCase("UNPAID")) {
+                                str = InvoiceStatus.UNPAID.toString();
+                                break;
+                            } else {
+                                System.out.println("Invalid. Please choose \"PAID\" or \"UNPAID\" invoice.");
+                            }
+                        }
 
 
                         double deliveryFee;
@@ -424,25 +439,34 @@ public class UI {
 
                             invoiceDB.save(invoice);
                         }
+                    }
 
 
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update invoice
                     //invoiceDB.printAll();
-                    int id;
-                    Invoice update;
-                    System.out.println("\nEnter the ID for the invoice: ");
-                    id = validateInt(userInput);
-                    update = invoiceDB.getPOJO(id);
-                    if(update == null) {
-                        System.out.println("Customer does not exist in the database or no customers have been added yet.");
-                    } else {
-                        System.out.println("Enter payment amount: ");
-                        double payment = validateDouble(userInput);
-                        update.makePayment(payment);
-                        //invoiceDB.update(update); //todo: waiting for invoiceDB update method
+                    if(invoiceDB.isEmpty()) {
+                        System.out.println("Cannot make payment since no invoices have been " +
+                                "added to the database. Please add an invoice to the database first.");
                     }
+
+                    else {
+                        int id;
+                        Invoice update;
+                        System.out.println("\nEnter the ID for the invoice: ");
+                        id = validateInt(userInput);
+                        update = invoiceDB.getPOJO(id);
+                        if(update == null) {
+                            System.out.println("Customer does not exist in the database or no customers have been added yet.");
+                        } else {
+                            System.out.println("Enter payment amount: ");
+                            double payment = validateDouble(userInput);
+                            update.makePayment(payment);
+                            //invoiceDB.update(update); //todo: waiting for invoiceDB update method
+                        }
+                    }
+
                     break;
                 case 3:
                     // TODO: 12/4/20  Display invoices are open sorted in increasing order of invoice date. <- from rfp
@@ -452,6 +476,11 @@ public class UI {
                     // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
                     //invoiceDB.getPaid();
                     break;
+
+                case 5:
+                    invoiceDB.printAll();
+                    break;
+
                 case -1:
                     break;
                 default:

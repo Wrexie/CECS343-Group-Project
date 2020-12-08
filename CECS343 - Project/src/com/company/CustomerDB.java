@@ -100,6 +100,24 @@ public class CustomerDB {
         }
     }
 
+    public boolean isEmpty() {
+        try {
+            String query = "select * from customers";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if(rs.next() == false) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public void deleteAll() {
         try {
             String query = "delete from customers";

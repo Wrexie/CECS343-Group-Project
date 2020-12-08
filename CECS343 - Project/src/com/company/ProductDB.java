@@ -77,4 +77,22 @@ public class ProductDB {
         return null;
     }
 
+    public boolean isEmpty() {
+        try {
+            String query = "select * from products";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if(rs.next() == false) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }
