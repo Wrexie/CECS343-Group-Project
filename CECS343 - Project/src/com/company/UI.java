@@ -118,6 +118,7 @@ public class UI {
      */
     private static void salesmanMenu(Scanner userInput) {
         int sel = 0;
+        EmployeeDB employeeDB = new EmployeeDB(conn);
 
         while (sel != -1) {
             System.out.format("---------------------------\n    Salesman Menu\nWhat would you like to do?\n 1.Add salesman\n 2.Update salesman\n 3.Display all total sales and commissions\n-1.Return to main menu\n");
@@ -125,9 +126,28 @@ public class UI {
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add salesman
+                    System.out.println("Enter employee fullname: ");
+                    String employeeName = userInput.nextLine();
+                    System.out.println("Enter employee phone: ");
+                    String phone = userInput.nextLine();
+
+                    double commRate;
+                    System.out.println("Enter employee commission rate: ");
+                    while(!userInput.hasNextDouble()) {
+                        System.out.println("Invalid input. Please enter a number.");
+                        userInput.next();
+                    }
+                    commRate = userInput.nextDouble();
+
+                    employeeDB.save(new Employee(employeeName,phone,commRate));
+                    if(userInput.hasNextLine()) {
+                        userInput.nextLine();
+                    }
+
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update warehouse
+
                     break;
                 case 3:
                     // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
