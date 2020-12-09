@@ -547,7 +547,7 @@ public class UI {
                         id = validateInt(userInput);
                         update = invoiceDB.getPOJO(id);
                         if(update == null) {
-                            System.out.println("Customer does not exist in the database or no customers have been added yet.");
+                            System.out.println("Invoice does not exist in the database or no invoices have been added yet.");
                         } else {
                             System.out.println("Enter payment amount: ");
                             double payment = validateDouble(userInput);

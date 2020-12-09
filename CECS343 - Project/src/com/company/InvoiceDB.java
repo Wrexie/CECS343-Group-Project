@@ -173,6 +173,35 @@ public class InvoiceDB {
         }
     }
 
+    public void update(Invoice invoice) {
+        try {
+            String query = "update invoices set remainingbalance = ?, total = ?, deliveryfee = ?, taxamount = ?," +
+                    "thirtydaycount = ?, commissionamount = ?, status = ?, openeddate = ?, isdeliverable = ?," +
+                    "customerid = ?, employeeid = ? where invoice id = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setDouble(1, invoice.getOwed());
+            pStmt.setDouble(2, invoice.getTotal());
+            pStmt.setDouble(3, invoice.getDeliveryFee());
+            pStmt.setDouble(4, invoice.getTaxAmt());
+            pStmt.setInt(5, invoice.getThirtyDayCount());
+            pStmt.setDouble(6, invoice.getCommAmount());
+            pStmt.setString(7, invoice.getStatus().toString());
+            pStmt.setDate(8, java.sql.Date.valueOf(invoice.getOpenedDate()));
+            pStmt.setBoolean(9, invoice.getIsDeliverable());
+            pStmt.setInt(10, invoice.getCustomer().getId());
+            pStmt.setInt(11, invoice.getEmployee().getEmployeeID());
+            pStmt.setInt(12, invoice.getInvoiceID());
+
+            pStmt.executeUpdate();
+
+            pStmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public boolean isEmpty() {
         try {
             String query = "select * from invoices";
