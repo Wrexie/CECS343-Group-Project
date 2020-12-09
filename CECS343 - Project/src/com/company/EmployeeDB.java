@@ -4,6 +4,7 @@ import java.sql.*;
 public class EmployeeDB {
     private Connection conn;
     static final String local_format = "%-25s%-25s%-25s%-25s";
+    static final String sales_comm_format = "%-25s%-25s%-25s%-25s%-25s";
 
     public EmployeeDB(Connection conn) { this.conn = conn; }
 
@@ -107,5 +108,36 @@ public class EmployeeDB {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public void printTotalSalesAndCommissions() {
+        try {
+            String query = "select employees.employeeid, fullname, commissionrate," +
+                    " sum(total), sum(commissionamount) from employees inner join invoices" +
+                    " on employees.employeeid = invoices.employeeid group by employees.employeeid," +
+                    " fullname, commissionrate order by sum(total) desc";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Employees and their Sales and Commission Totals: ");
+            System.out.printf(sales_comm_format, "Employee ID", "Employee Name", "Commission Rate",
+                    "Total Sales Amount", "Total Commissions Amount");
+            System.out.println();
+
+            while(rs.next()) {
+                int employeeid = rs.getInt("EMPLOYEEID");
+                String employeename = rs.getString("FULLNAME");
+                double commRate = rs.getDouble("COMMISSIONRATE");
+                double salesTotal = rs.getDouble("4");
+                double commsTotal = rs.getDouble("5");
+
+                System.out.printf(sales_comm_format, employeeid, employeename, commRate, salesTotal, commsTotal);
+                System.out.println();
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

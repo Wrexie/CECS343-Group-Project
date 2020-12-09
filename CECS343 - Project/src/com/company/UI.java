@@ -284,7 +284,8 @@ public class UI {
 
                     break;
                 case 3:
-                    // TODO: 12/4/20  Display the total amount of sales $$ and total commission earned each salesman
+                    System.out.println();
+                    employeeDB.printTotalSalesAndCommissions();
                     break;
 
                 case 4:
@@ -643,7 +644,8 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1. Add product\n 2. Display all products\n 3.Display products that have 5 or fewer stock\n -1.Return to main menu\n");
+            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?" +
+                    "\n 1.Add product\n 2.Display all products\n 3.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
