@@ -101,6 +101,9 @@ public class Invoice {
 
         } else {
             prodList.put(product.getProductID(), quantity);
+            for(int i = 0; i < quantity; i++) {
+                product.addStock(-1);
+            }
         }
 
         return product;

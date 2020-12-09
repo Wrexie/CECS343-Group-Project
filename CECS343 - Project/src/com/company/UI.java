@@ -153,7 +153,7 @@ public class UI {
                             }
 
                             System.out.println("Saving warehouse...");
-                            //warehouseDB.update(updateWarehouse); //todo: implement update in warehouseDB
+                            warehouseDB.update(updateWarehouse); //todo: implement update in warehouseDB
                         } else {
                             System.out.println("Warehouse not found. Update aborted.");
                         }
@@ -168,17 +168,19 @@ public class UI {
                         System.out.println("Product table is empty. Please add a product before updating stock.");
                     }
                     else {
+                        warehouseDB.printAll();
                         System.out.println("Enter a warehouse name: ");
                         String warehouseName = userInput.nextLine();
                         Warehouse warehouseStock = warehouseDB.getPOJO(warehouseName);
                         if(warehouseStock != null) {
-                            //productDB.printAll(warehouse); Maybe change this to only show products in a specific warehouse? //todo: add method in productDB to list product by warehouse name
+                            //; Maybe change this to only show products in a specific warehouse? //todo: add method in productDB to list product by warehouse name
+                            warehouseDB.printProducts(warehouseName);
                             int prodID = 0;
                             Product stockUpdate = null;
                             while(prodID != -1) {
                                 System.out.println("Enter a product ID. (-1 to exit):");
                                 prodID = validateInt(userInput);
-                                if(prodID != 1) {
+                                if(prodID != -1) {
                                     stockUpdate = productDB.getPOJO(prodID);
                                     if(stockUpdate != null) {
                                         if(stockUpdate.getWarehouse().getName().equalsIgnoreCase(warehouseStock.getName())) { //checking if the warehouse of product and stated warehouse matches
@@ -204,6 +206,7 @@ public class UI {
                     break;
                 case 4:
                     // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
+
                     break;
                 case -1:
                     break;
