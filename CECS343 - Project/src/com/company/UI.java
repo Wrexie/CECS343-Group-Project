@@ -652,7 +652,8 @@ public class UI {
 
         while (sel != -1) {
             System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?" +
-                    "\n 1.Add product\n 2.Display all products\n 3.Display products that have 5 or fewer stock\n-1.Return to main menu\n");
+                    "\n 1.Add product\n 2.Display all products\n 3.Display products that have 5 or fewer\n" +
+                    " 4.Display Product Profits\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -699,6 +700,11 @@ public class UI {
                     //  (sorted in increasing order by quantity) <- from rfp
                     productDB.printNeedRestock();
                     break;
+
+                case 4:
+                    productDB.printProfits();
+                    break;
+
                 case -1:
                     break;
                 default:

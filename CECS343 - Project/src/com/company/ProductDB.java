@@ -6,6 +6,7 @@ import java.sql.*;
 public class ProductDB {
     private Connection conn;
     static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s";
+    static final String profit_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
 
     public ProductDB(Connection conn) { this.conn = conn; };
 
@@ -162,6 +163,42 @@ public class ProductDB {
                 System.out.printf(local_format, productid, productname, sellprice, buyprice, stock, warehousename);
                 System.out.println();
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printProfits() {
+        try {
+            String query = "select productname, sellprice, buyprice, sum(stock), sum(quantityordered)," +
+                    " sum(buyprice * quantityordered), sum(sellprice * quantityordered)," +
+                    " sum(100-((buyprice * quantityordered)/(sellprice * quantityordered))*100) from products" +
+                    " inner join orderdetails on orderdetails.productid = products.PRODUCTID" +
+                    " group by productname, sellprice, buyprice";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Product Profits: ");
+            System.out.printf(profit_format, "Product Name", "Sell Price", "Buy Price", "Total Stock",
+                    "Total Ordered", "Total Sales $", "Total Cost $", "Profit Percentage");
+            System.out.println();
+
+            while(rs.next()) {
+                String productname = rs.getString("PRODUCTNAME");
+                double sellprice =  rs.getDouble("SELLPRICE");
+                double buyprice = rs.getDouble("BUYPRICE");
+                int totalStock = rs.getInt("4");
+                int totalOrdered = rs.getInt("5");
+                double totalCost = rs.getDouble("6");
+                double totalSales = rs.getDouble("7");
+                double profitPercent = rs.getDouble("8");
+
+                System.out.printf(profit_format, productname, sellprice, buyprice, totalStock, totalOrdered,
+                        totalSales, totalCost, profitPercent);
+                System.out.println();
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
