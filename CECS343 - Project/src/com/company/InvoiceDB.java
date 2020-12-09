@@ -222,7 +222,7 @@ public class InvoiceDB {
 
     public void printPaid() {
         try {
-            String query = "select * from invoices where status = 'paid' order by total desc";
+            String query = "select * from invoices where status = 'PAID' order by total desc";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Paid Invoices: ");
@@ -257,7 +257,7 @@ public class InvoiceDB {
 
     public void printUnpaid() {
         try {
-            String query = "select * from invoices where status = 'unpaid' order by openeddate asc";
+            String query = "select * from invoices where status = 'UNPAID' order by openeddate asc";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Unpaid Invoices: ");
