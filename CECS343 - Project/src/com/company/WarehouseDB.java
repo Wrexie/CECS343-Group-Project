@@ -4,6 +4,7 @@ import java.sql.*;
 public class WarehouseDB {
     private Connection conn;
     static final String local_format = "%-25s%-25s%-25s";
+    static final String product_format = "%-25s%-25s%-25s%-25s%-25s%-25s";
 
     public WarehouseDB(Connection conn) { this.conn = conn; }
 
@@ -98,6 +99,33 @@ public class WarehouseDB {
                 String phone = rs.getString("PHONE");
 
                 System.out.printf(local_format, warehousename, address, phone);
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printProducts(String warehousename) {
+        try {
+            String query = "select * from products where warehousename = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setString(1, warehousename);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Products in " + warehousename + " :");
+            System.out.printf(product_format, "Product ID", "Product Name", "Sell Price", "Buy Price", "Stock", "Warehouse Name");
+            System.out.println();
+
+            while(rs.next()) {
+                int productid = rs.getInt("PRODUCTID");
+                String productname = rs.getString("PRODUCTNAME");
+                double sellprice = rs.getDouble("SELLPRICE");
+                double buyprice = rs.getDouble("BUYPRICE");
+                int stock = rs.getInt("STOCK");
+
+                System.out.printf(product_format, productid, productname, sellprice, buyprice, stock, warehousename);
                 System.out.println();
             }
 
