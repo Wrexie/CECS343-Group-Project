@@ -553,7 +553,7 @@ public class UI {
                             System.out.println("Enter payment amount: ");
                             double payment = validateDouble(userInput);
                             update.makePayment(payment);
-                            //invoiceDB.update(update); //todo: waiting for invoiceDB update method
+                            invoiceDB.update(update);
                         }
                     }
 

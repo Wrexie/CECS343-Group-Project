@@ -177,7 +177,7 @@ public class InvoiceDB {
         try {
             String query = "update invoices set remainingbalance = ?, total = ?, deliveryfee = ?, taxamount = ?," +
                     "thirtydaycount = ?, commissionamount = ?, status = ?, openeddate = ?, isdeliverable = ?," +
-                    "customerid = ?, employeeid = ? where invoice id = ?";
+                    "customerid = ?, employeeid = ? where invoiceid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setDouble(1, invoice.getOwed());
             pStmt.setDouble(2, invoice.getTotal());
