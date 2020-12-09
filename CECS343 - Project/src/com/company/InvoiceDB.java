@@ -10,6 +10,7 @@ public class InvoiceDB {
     private Connection conn;
     public InvoiceDB(Connection conn) {this.conn = conn;}
     static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    static final String product_format = "%-25s%-25s%-25s";
 
 
     public Invoice getPOJO(int id) {
@@ -131,6 +132,8 @@ public class InvoiceDB {
                 pStmt.setInt(3, (int)pair.getValue());
             }
 
+            pStmt.executeUpdate();
+
             pStmt.close();
 
         } catch(SQLException e) {
@@ -145,9 +148,6 @@ public class InvoiceDB {
             ResultSet rs = pStmt.executeQuery();
 
             System.out.println("Invoices: ");
-            System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                    "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
-            System.out.println();
 
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
@@ -163,8 +163,16 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                System.out.println("--------------------------------------------------------------------------------------");
+                System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
+                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                System.out.println();
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
                         thirtyDayCount, taxAmount, commissionAmount, status);
+
+                System.out.println();
+                printProducts(invoiceid);
+                System.out.println("--------------------------------------------------------------------------------------");
                 System.out.println();
             }
             System.out.println("\n");
@@ -281,6 +289,32 @@ public class InvoiceDB {
 
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
                         thirtyDayCount, taxAmount, commissionAmount, status);
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printProducts(int invoiceid) {
+        try {
+            String query = "select orderdetails.productid, productname, quantityordered" +
+                    " from orderdetails inner join products on products.productid = orderdetails.productid where invoiceid = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setInt(1, invoiceid);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Products from invoice " + invoiceid + " :");
+            System.out.printf(product_format, "Product ID", "Product Name", "Quantity Ordered");
+            System.out.println();
+
+            while(rs.next()) {
+                int productid = rs.getInt("PRODUCTID");
+                String productname = rs.getString("PRODUCTNAME");
+                int quantityordered = rs.getInt("QUANTITYORDERED");
+
+                System.out.printf(product_format, productid, productname, quantityordered);
                 System.out.println();
             }
 
