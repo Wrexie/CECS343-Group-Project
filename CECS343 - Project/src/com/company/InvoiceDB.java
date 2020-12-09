@@ -9,7 +9,8 @@ import java.util.Map;
 public class InvoiceDB {
     private Connection conn;
     public InvoiceDB(Connection conn) {this.conn = conn;}
-    static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    //static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
     static final String product_format = "%-25s%-25s%-25s";
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -165,10 +166,10 @@ public class InvoiceDB {
 
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Tax Amount", "Commission Amount", "Status");
                 System.out.println();
                 System.out.printf(local_format, invoiceid, df.format(total), df.format(remaining), customerid, employeeid, df.format(deliveryFee), isDeliverable, date,
-                        thirtyDayCount, df.format(taxAmount), df.format(commissionAmount), status);
+                         df.format(taxAmount), df.format(commissionAmount), status);
 
                 System.out.println();
                 printProducts(invoiceid);
@@ -251,10 +252,10 @@ public class InvoiceDB {
 
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                        "Delivery Fee", "Is Deliverable?", "Opened Date",  "Tax Amount", "Commission Amount", "Status");
                 System.out.println();
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
-                        thirtyDayCount, taxAmount, commissionAmount, status);
+                         taxAmount, commissionAmount, status);
 
                 System.out.println();
                 printProducts(invoiceid);
@@ -291,10 +292,10 @@ public class InvoiceDB {
 
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Tax Amount", "Commission Amount", "Status");
                 System.out.println();
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
-                        thirtyDayCount, taxAmount, commissionAmount, status);
+                         taxAmount, commissionAmount, status);
 
                 System.out.println();
                 printProducts(invoiceid);
