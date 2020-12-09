@@ -88,8 +88,8 @@ public class Invoice {
                 prodList.put(product.getProductID(), quantity);
                 for(int i = 0; i < quantity; i++) {
                     product.addStock(-1);
-                    owed += product.getSellPrice()*customer.getTaxRate();
-                    total += product.getSellPrice()*customer.getTaxRate();
+                    owed += product.getSellPrice()*(1.0+customer.getTaxRate());
+                    total += product.getSellPrice()*(1.0+customer.getTaxRate());
                     commAmount += product.getSellPrice()*employee.getCommRate();
                 }
                 taxAmt = total*customer.getTaxRate();
@@ -160,6 +160,7 @@ public class Invoice {
 
                 if(diff < DAYS_FOR_DISCOUNT) {
                     total -= (total*DISCOUNT);
+                    System.out.println("Discount applied to invoice! ID: " + invoiceID);
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -173,7 +174,7 @@ public class UI {
                         if(warehouseStock != null) {
                             //productDB.printAll(warehouse); Maybe change this to only show products in a specific warehouse? //todo: add method in productDB to list product by warehouse name
                             int prodID = 0;
-                            Product stockUpdate;
+                            Product stockUpdate = null;
                             while(prodID != -1) {
                                 System.out.println("Enter a product ID. (-1 to exit):");
                                 prodID = validateInt(userInput);
@@ -184,6 +185,7 @@ public class UI {
                                             System.out.println("Enter quantity to add: ");
                                             int quantity = validateInt(userInput);
                                             stockUpdate.addStock(quantity);
+                                            productDB.update(stockUpdate);
                                         } else {
                                             System.out.println("Could not find product inside \"" + warehouseStock.getName() + "\" warehouse.");
                                         }
@@ -194,8 +196,6 @@ public class UI {
 
                             }
 
-                            System.out.println("Saving product changes...");
-                            //productDB.update(); //todo: implement update in productDB
                         } else {
                             System.out.println("Aborted. The warehouse does not exist.");
                         }
@@ -226,7 +226,6 @@ public class UI {
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    // TODO: 11/26/20 Redirected the user to add salesman
                     System.out.println("Enter employee fullname: ");
                     String employeeName = userInput.nextLine();
                     System.out.println("Enter employee phone: ");
@@ -247,7 +246,6 @@ public class UI {
 
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update employee
                     employeeDB.printAll();
                     System.out.println("Enter the ID for the employee you would like to update: ");
 
@@ -443,13 +441,7 @@ public class UI {
                                 System.out.println("Enter invoice total $: ");
                                 total = validateDouble(userInput);
                                 System.out.println("Enter the date for the invoice.");
-                                System.out.println("Enter Year (yyyy):");
-                                int year = validateInt(userInput);
-                                System.out.println("Enter Month (mm):");
-                                int month = validateInt(userInput);
-                                System.out.println("Enter Day (dd):");
-                                int days = validateInt(userInput);
-                                opened = LocalDate.of(year, month, days);
+                                opened = validateDate(userInput);
                                 break;
                             } else if(str.equalsIgnoreCase("UNPAID")) {
                                 str = InvoiceStatus.UNPAID.toString();
@@ -474,16 +466,23 @@ public class UI {
                             isDeliverable = true;
                         }
 
+                        customerDB.printAll();
                         while(true) {
                             System.out.println("Enter the ID of the customer: ");
                             customer = customerDB.getPOJO(validateInt(userInput));
                             if (customer == null) {
                                 System.out.println("Customer was not found. Try again");
-                            } else {
+                            } else if (str.equalsIgnoreCase("UNPAID") && customer.getStatus() == CustomerStatus.SUSPENDED) {
+                                System.out.println("This customer has been suspended. To add an unpaid invoice change their status to ACTIVE.");
+                            } else if (str.equalsIgnoreCase("UNPAID") && customer.getStatus() == CustomerStatus.INACTIVE) {
+                                System.out.println("This customer has an INACTIVE status. To add an unpaid invoice change their status to ACTIVE.");
+                            }
+                                else {
                                 break;
                             }
                         }
 
+                        employeeDB.printAll();
                         while(true) {
                             System.out.println("Enter ID of salesperson: ");
                             employee = employeeDB.getPOJO(validateInt(userInput));
@@ -494,6 +493,7 @@ public class UI {
                             }
                         }
 
+
                         if(str.equalsIgnoreCase("UNPAID")) {
                             invoice = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
                         } else if(str.equalsIgnoreCase("PAID")){
@@ -502,9 +502,9 @@ public class UI {
                             invoice = null;
                         }
 
-                        //todo: list all products ??
                         int productSel = 0;
                         Product product;
+                        productDB.printAll();
                         while(invoice != null && productSel != -1) {
                             System.out.println("Enter product ID to add to invoice (-1 to exit): ");
                             productSel = validateInt(userInput);
@@ -534,14 +534,13 @@ public class UI {
 
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update invoice
-                    //invoiceDB.printAll();
                     if(invoiceDB.isEmpty()) {
                         System.out.println("Cannot make payment since no invoices have been " +
                                 "added to the database. Please add an invoice to the database first.");
                     }
 
                     else {
+                        invoiceDB.printAll();
                         int id;
                         Invoice update;
                         System.out.println("\nEnter the ID for the invoice: ");
@@ -559,12 +558,10 @@ public class UI {
 
                     break;
                 case 3:
-                    // TODO: 12/4/20  Display invoices are open sorted in increasing order of invoice date. <- from rfp
-                    //invoiceDB.getUnpaid();
+                    invoiceDB.printUnpaid();
                     break;
                 case 4:
-                    // TODO: 12/4/20 Display invoices are closed (paid) sorted in decreasing order of invoice amount <- from rfp
-                    //invoiceDB.getPaid();
+                    invoiceDB.printPaid();
                     break;
 
                 case 5:
@@ -579,6 +576,30 @@ public class UI {
         }
     }
 
+    private static LocalDate validateDate(Scanner userInput) {
+        int year;
+        int month;
+        int days;
+        LocalDate date;
+        do {
+            try {
+                System.out.println("Enter Year (yyyy):");
+                year = validateInt(userInput);
+                System.out.println("Enter Month (mm):");
+                month = validateInt(userInput);
+                System.out.println("Enter Day (dd):");
+                days = validateInt(userInput);
+                date = LocalDate.of(year, month, days);
+                break;
+            } catch (DateTimeException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Please try again.");
+            }
+        }
+        while(true);
+
+        return date;
+    }
     private static double validateDouble(Scanner userInput) {
         while(!userInput.hasNextDouble()) {
             System.out.println("Invalid input. Please enter a number.");
@@ -683,8 +704,6 @@ public class UI {
      * data and update them if he/she wishes.
      */
     private static void loginMenu() {
-        // TODO: 11/26/20 Need to add a verification method to determine if the user information is store in the database
-        // for testing purpose
         Scanner userInput = new Scanner(System.in);
 
         String userName = "admin", password = "";
