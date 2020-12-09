@@ -141,5 +141,32 @@ public class ProductDB {
         }
     }
 
+    public void printNeedRestock() {
+        try {
+            String query = "select * from products where stock <= 5 order by stock asc";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Products that need to be restocked: ");
+            System.out.printf(local_format, "Product ID", "Product Name", "Sell Price", "Buy Price", "Stock", "Warehouse Name");
+            System.out.println();
+
+            while(rs.next()) {
+                int productid = rs.getInt("PRODUCTID");
+                String productname = rs.getString("PRODUCTNAME");
+                double sellprice = rs.getDouble("SELLPRICE");
+                double buyprice = rs.getDouble("BUYPRICE");
+                int stock = rs.getInt("STOCK");
+                String warehousename = rs.getString("WAREHOUSENAME");
+
+                System.out.printf(local_format, productid, productname, sellprice, buyprice, stock, warehousename);
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
