@@ -517,7 +517,9 @@ public class UI {
                                     System.out.println("Enter quantity:");
                                     int quantity = validateInt(userInput);
                                     product = invoice.addProduct(product, quantity);
-                                    productDB.save(product);
+                                    if(product != null) {
+                                        productDB.update(product);
+                                    }
                                 }
 
                             }
