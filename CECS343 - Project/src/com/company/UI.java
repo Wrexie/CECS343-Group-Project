@@ -514,21 +514,48 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1.Display all products\n 2.Display products that have 5 or fewer stock\n -1.Return to main menu\n");
+            System.out.format("---------------------------\n    Product Menu\nWhat would you like to do?\n 1. Add product\n 2. Display all products\n 3.Display products that have 5 or fewer stock\n -1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add product
+                    if(warehouseDB.isEmpty()) {
+                        System.out.println("Cannot add a product since no warehouses have been " +
+                                "added to the database. Please add a warehouse to the database first.");
+                    } else {
+                        //warehouseDB.printAll();
+                        Warehouse warehouse;
+                        while(true) {
+                            System.out.println("Enter warehouse name: ");
+                            String name = userInput.nextLine();
+                            warehouse = warehouseDB.getPOJO(name);
+                            if(warehouse == null) {
+                                System.out.println("Warehouse does not exist. Try again");
+                            } else {
+                                System.out.println("Enter product name");
+                                String prodName = userInput.nextLine();
+                                System.out.println("Enter Buy Price: ");
+                                double buy = validateDouble(userInput);
+                                System.out.println("Enter Sell Price");
+                                double sell = validateDouble(userInput);
+                                System.out.println("Enter current stock amount: ");
+                                int stock = validateInt(userInput);
+
+                                Product product = new Product(prodName, sell, buy, stock, warehouse);
+                                System.out.println("Saving product...");
+                                productDB.save(product);
+                                break;
+                            }
+                        }
+
+                    }
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update product
-                    break;
-                case 3:
                     // TODO: 12/4/20 Display each product (product name, Selling Price, Cost Price,
                     //  Total Quantity on Hand, Quantity Sold, Total Sales, Total Cost, Total Profit
                     //  and Total Profit Percent) need to be sorted in decreasing order of profit percent. <- from rfp
                     break;
-                case 4:
+                case 3:
                     // TODO: 12/4/20 Display products in inventory that have 5 or fewer in the warehouse
                     //  (sorted in increasing order by quantity) <- from rfp
                     break;
