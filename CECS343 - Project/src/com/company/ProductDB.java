@@ -5,6 +5,7 @@ import java.sql.*;
 
 public class ProductDB {
     private Connection conn;
+    static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s";
 
     public ProductDB(Connection conn) { this.conn = conn; };
 
@@ -110,6 +111,34 @@ public class ProductDB {
             e.printStackTrace();
         }
 
+    }
+
+    public void printAll() {
+        try {
+            String query = "select * from products";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Products: ");
+            System.out.printf(local_format, "Product ID", "Product Name", "Sell Price", "Buy Price", "Stock", "Warehouse Name");
+            System.out.println();
+
+            while(rs.next()) {
+                int productid = rs.getInt("PRODUCTID");
+                String productname = rs.getString("PRODUCTNAME");
+                double sellprice = rs.getDouble("SELLPRICE");
+                double buyprice = rs.getDouble("BUYPRICE");
+                int stock = rs.getInt("STOCK");
+                String warehousename = rs.getString("WAREHOUSENAME");
+
+                System.out.printf(local_format, productid, productname, sellprice, buyprice, stock, warehousename);
+                System.out.println();
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

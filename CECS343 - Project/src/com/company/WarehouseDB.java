@@ -3,6 +3,7 @@ import java.sql.*;
 
 public class WarehouseDB {
     private Connection conn;
+    static final String local_format = "%-25s%-25s%-25s";
 
     public WarehouseDB(Connection conn) { this.conn = conn; }
 
@@ -76,6 +77,30 @@ public class WarehouseDB {
             pStmt.executeUpdate();
 
             pStmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void printAll() {
+        try {
+            String query = "select * from warehouses";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            System.out.println("Warehouses: ");
+            System.out.printf(local_format, "Warehouse Name", "Address", "Phone");
+            System.out.println();
+
+            while(rs.next()) {
+                String warehousename = rs.getString("WAREHOUSENAME");
+                String address = rs.getString("ADDRESS");
+                String phone = rs.getString("PHONE");
+
+                System.out.printf(local_format, warehousename, address, phone);
+                System.out.println();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
