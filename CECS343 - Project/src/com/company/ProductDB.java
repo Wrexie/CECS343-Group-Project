@@ -175,7 +175,7 @@ public class ProductDB {
                     " sum(buyprice * quantityordered), sum(sellprice * quantityordered)," +
                     " sum(100-((buyprice * quantityordered)/(sellprice * quantityordered))*100) from products" +
                     " inner join orderdetails on orderdetails.productid = products.PRODUCTID" +
-                    " group by productname, sellprice, buyprice order by 8";
+                    " group by productname, sellprice, buyprice order by 8 desc";
 
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
