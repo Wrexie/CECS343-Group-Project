@@ -9,7 +9,6 @@ public class Product {
     private int stock;
     private Warehouse warehouse;
 
-    //todo: add other attributes
     public Product(String productName, double sellPrice, double buyPrice, int stock, Warehouse warehouse){
         this.productName=productName;
         this.sellPrice=sellPrice;
@@ -27,7 +26,7 @@ public class Product {
         this.warehouse = warehouse;
     }
 
-    //todo: write setters and getters
+
     public int getProductID() {
         return productID;
     }

@@ -59,19 +59,6 @@ public class ProductDB {
 
                 return new Product(resultID, productName, sellPrice, buyPrice, stock, warehouse);
 
-                /*
-                query = "select * from warehouses where warehousename = ?";
-                pStmt = conn.prepareStatement(query);
-                pStmt.setString(1, rs.getString("WAREHOUSENAME"));
-                rs = pStmt.executeQuery();
-                if(rs.next()) {
-                    warehousename = rs.getString("WAREHOUSENAME");
-                    address = rs.getString("ADDRESS");
-                    phone = rs.getString("PHONE");
-
-                    warehouse = new Warehouse(warehousename, address, phone);
-                    return new Product(resultID, productName, sellPrice, buyPrice, stock, warehouse);
-                }*/
             }
 
         } catch (SQLException e) {
