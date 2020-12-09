@@ -173,7 +173,6 @@ public class UI {
                         String warehouseName = userInput.nextLine();
                         Warehouse warehouseStock = warehouseDB.getPOJO(warehouseName);
                         if(warehouseStock != null) {
-                            //; Maybe change this to only show products in a specific warehouse? //todo: add method in productDB to list product by warehouse name
                             warehouseDB.printProducts(warehouseName);
                             int prodID = 0;
                             Product stockUpdate = null;
