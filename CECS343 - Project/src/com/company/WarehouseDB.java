@@ -64,4 +64,21 @@ public class WarehouseDB {
         }
         return true;
     }
+
+    public void update(Warehouse warehouse) {
+        try {
+            String query = "update warehouses set address = ?, phone = ? where warehousename = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setString(1, warehouse.getAddress());
+            pStmt.setString(2, warehouse.getPhone());
+            pStmt.setString(3, warehouse.getName());
+
+            pStmt.executeUpdate();
+
+            pStmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

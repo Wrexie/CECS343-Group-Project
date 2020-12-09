@@ -95,6 +95,22 @@ public class ProductDB {
         return true;
     }
 
+    public void update(Product product) {
+        try {
+            String query = "update products set stock = ? where productid = ?";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            pStmt.setInt(1, product.getStock());
+            pStmt.setInt(2, product.getProductID());
+
+            pStmt.executeUpdate();
+
+            pStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }
