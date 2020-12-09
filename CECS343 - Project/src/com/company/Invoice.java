@@ -140,6 +140,9 @@ public class Invoice {
      */
     public void checkPenalty() {
         if(status.equals(InvoiceStatus.UNPAID)) {
+            if(thirtyDayCount > 0) {
+                customer.setStatus(CustomerStatus.SUSPENDED);
+            }
             if(openedDate != null) {
 
                int cycleCount = (int) DAYS.between(openedDate, LocalDate.now()) / 30;
