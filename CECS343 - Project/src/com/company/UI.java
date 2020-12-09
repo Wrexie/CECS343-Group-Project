@@ -101,7 +101,8 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Update warehouse\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Update warehouse" +
+                    "\n 3.Update stock\n 4.Display all product in Warehouse\n 5.Display all warehouses\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
@@ -205,8 +206,19 @@ public class UI {
                     break;
                 case 4:
                     // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
-
+                    System.out.println();
+                    warehouseDB.printAll();
+                    System.out.println();
+                    System.out.println("Enter a warehouse name: ");
+                    String warehouseName = userInput.nextLine();
+                    warehouseDB.printProducts(warehouseName);
                     break;
+
+                case 5:
+                    System.out.println();
+                    warehouseDB.printAll();
+                    break;
+
                 case -1:
                     break;
                 default:
@@ -276,6 +288,7 @@ public class UI {
                     break;
 
                 case 4:
+                    System.out.println();
                     employeeDB.printAll();
                     break;
 
@@ -393,6 +406,7 @@ public class UI {
                     }
                     break;
                 case 3:
+                    System.out.println();
                     customerDB.printAll();
                     break;
                 case -1:
@@ -560,13 +574,16 @@ public class UI {
 
                     break;
                 case 3:
+                    System.out.println();
                     invoiceDB.printUnpaid();
                     break;
                 case 4:
+                    System.out.println();
                     invoiceDB.printPaid();
                     break;
 
                 case 5:
+                    System.out.println();
                     invoiceDB.printAll();
                     break;
 
