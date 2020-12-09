@@ -175,10 +175,10 @@ public class ProductDB {
                     " sum(buyprice * quantityordered), sum(sellprice * quantityordered)," +
                     " sum(100-((buyprice * quantityordered)/(sellprice * quantityordered))*100) from products" +
                     " inner join orderdetails on orderdetails.productid = products.PRODUCTID" +
-                    " group by productname, sellprice, buyprice";
+                    " group by productname, sellprice, buyprice order by 8";
+
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
-
             System.out.println("Product Profits: ");
             System.out.printf(profit_format, "Product Name", "Sell Price", "Buy Price", "Total Stock",
                     "Total Ordered", "Total Sales $", "Total Cost $", "Profit Percentage");
@@ -192,7 +192,7 @@ public class ProductDB {
                 int totalOrdered = rs.getInt("5");
                 double totalCost = rs.getDouble("6");
                 double totalSales = rs.getDouble("7");
-                double profitPercent = rs.getDouble("8");
+                double profitPercent = 100-((totalCost/totalSales)*100);
 
                 System.out.printf(profit_format, productname, sellprice, buyprice, totalStock, totalOrdered,
                         totalSales, totalCost, profitPercent);
