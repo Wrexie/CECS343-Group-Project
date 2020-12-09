@@ -673,6 +673,7 @@ public class UI {
                 case 3:
                     // TODO: 12/4/20 Display products in inventory that have 5 or fewer in the warehouse
                     //  (sorted in increasing order by quantity) <- from rfp
+                    productDB.printNeedRestock();
                     break;
                 case -1:
                     break;

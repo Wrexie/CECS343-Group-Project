@@ -234,9 +234,6 @@ public class InvoiceDB {
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Paid Invoices: ");
-            System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                    "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
-            System.out.println();
 
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
@@ -252,8 +249,16 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                System.out.println("--------------------------------------------------------------------------------------");
+                System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
+                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                System.out.println();
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
                         thirtyDayCount, taxAmount, commissionAmount, status);
+
+                System.out.println();
+                printProducts(invoiceid);
+                System.out.println("--------------------------------------------------------------------------------------");
                 System.out.println();
             }
 
@@ -269,9 +274,6 @@ public class InvoiceDB {
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Unpaid Invoices: ");
-            System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
-                    "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
-            System.out.println();
 
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
@@ -287,8 +289,16 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                System.out.println("--------------------------------------------------------------------------------------");
+                System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
+                        "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+                System.out.println();
                 System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
                         thirtyDayCount, taxAmount, commissionAmount, status);
+
+                System.out.println();
+                printProducts(invoiceid);
+                System.out.println("--------------------------------------------------------------------------------------");
                 System.out.println();
             }
 
