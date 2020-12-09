@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Tue Dec 08 21:29:38 PST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-45f9-f54e-00000f71cc40 
+Tue Dec 08 23:45:32 PST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-4676-63a7-00000f71cbb8 
 on database directory C:\Users\Rith\Documents\GitHub\CECS343-Group-Project\CECS343 - Project\CECS343DB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@77556fd 
 Loaded from file:/C:/Users/Rith/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
