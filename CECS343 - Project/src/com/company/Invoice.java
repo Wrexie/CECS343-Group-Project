@@ -57,6 +57,7 @@ public class Invoice {
         this.isDeliverable = isDeliverable;
         this.deliveryFee = deliveryFee;
         this.customer = customer;
+        this.prodList = new HashMap<>();
         this.status = InvoiceStatus.PAID;
         this.thirtyDayCount = (int) DAYS.between(openedDate, LocalDate.now()) / 30;
         this.openedDate = openedDate;
@@ -86,6 +87,7 @@ public class Invoice {
             if(product.getStock()-quantity >= 0) { //check stock of prod before adding
                 prodList.put(product.getProductID(), quantity);
                 for(int i = 0; i < quantity; i++) {
+                    product.addStock(-1);
                     owed += product.getSellPrice()*customer.getTaxRate();
                     total += product.getSellPrice()*customer.getTaxRate();
                     commAmount += product.getSellPrice()*employee.getCommRate();
@@ -101,7 +103,7 @@ public class Invoice {
             prodList.put(product.getProductID(), quantity);
         }
 
-        return null;
+        return product;
     }
 
     public void makePayment(double value) {

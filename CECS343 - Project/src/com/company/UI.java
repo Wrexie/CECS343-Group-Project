@@ -527,7 +527,6 @@ public class UI {
 
                         System.out.println("Saving invoice...");
                         if(invoice != null) {
-
                             invoiceDB.save(invoice);
                         }
                     }
@@ -645,6 +644,7 @@ public class UI {
                     // TODO: 12/4/20 Display each product (product name, Selling Price, Cost Price,
                     //  Total Quantity on Hand, Quantity Sold, Total Sales, Total Cost, Total Profit
                     //  and Total Profit Percent) need to be sorted in decreasing order of profit percent. <- from rfp
+                    productDB.printAll();
                     break;
                 case 3:
                     // TODO: 12/4/20 Display products in inventory that have 5 or fewer in the warehouse
