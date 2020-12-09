@@ -1,12 +1,13 @@
 package com.company;
-import org.apache.derby.iapi.types.SqlXmlUtil;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 
 public class ProductDB {
     private Connection conn;
     static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s";
     static final String profit_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public ProductDB(Connection conn) { this.conn = conn; };
 
@@ -132,7 +133,7 @@ public class ProductDB {
                 int stock = rs.getInt("STOCK");
                 String warehousename = rs.getString("WAREHOUSENAME");
 
-                System.out.printf(local_format, productid, productname, sellprice, buyprice, stock, warehousename);
+                System.out.printf(local_format, productid, productname, df.format(sellprice), df.format(buyprice), stock, warehousename);
                 System.out.println();
 
             }
@@ -160,7 +161,7 @@ public class ProductDB {
                 int stock = rs.getInt("STOCK");
                 String warehousename = rs.getString("WAREHOUSENAME");
 
-                System.out.printf(local_format, productid, productname, sellprice, buyprice, stock, warehousename);
+                System.out.printf(local_format, productid, productname, df.format(sellprice), df.format(buyprice), stock, warehousename);
                 System.out.println();
             }
 
@@ -194,8 +195,8 @@ public class ProductDB {
                 double totalSales = rs.getDouble("7");
                 double profitPercent = 100-((totalCost/totalSales)*100);
 
-                System.out.printf(profit_format, productname, sellprice, buyprice, totalStock, totalOrdered,
-                        totalSales, totalCost, profitPercent);
+                System.out.printf(profit_format, productname, df.format(sellprice), df.format(buyprice), totalStock, totalOrdered,
+                        df.format(totalSales), df.format(totalCost), df.format(profitPercent));
                 System.out.println();
             }
 

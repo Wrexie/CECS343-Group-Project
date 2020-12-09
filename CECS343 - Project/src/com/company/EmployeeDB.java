@@ -1,10 +1,12 @@
 package com.company;
 import java.sql.*;
+import java.text.DecimalFormat;
 
 public class EmployeeDB {
     private Connection conn;
     static final String local_format = "%-25s%-25s%-25s%-25s";
     static final String sales_comm_format = "%-25s%-25s%-25s%-25s%-25s";
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public EmployeeDB(Connection conn) { this.conn = conn; }
 
@@ -131,7 +133,7 @@ public class EmployeeDB {
                 double salesTotal = rs.getDouble("4");
                 double commsTotal = rs.getDouble("5");
 
-                System.out.printf(sales_comm_format, employeeid, employeename, commRate, salesTotal, commsTotal);
+                System.out.printf(sales_comm_format, employeeid, employeename, commRate, df.format(salesTotal), df.format(commsTotal));
                 System.out.println();
             }
 
