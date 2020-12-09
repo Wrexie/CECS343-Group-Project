@@ -130,30 +130,30 @@ public class UI {
                         String warehouseName = userInput.nextLine();
                         Warehouse updateWarehouse = warehouseDB.getPOJO(warehouseName);
                         if(updateWarehouse != null) {
-                            int updateSel = 0;
-                            while(updateSel != -1) {
-                                System.out.println("What would you like to update for the warehouse? \n1. Address\n2. Phone \n-1. Save");
-                                updateSel = validateInt(userInput);
-                                switch(updateSel) {
-                                    case 1:
-                                        System.out.println("Enter the new address: ");
-                                        String address = userInput.nextLine();
-                                        updateWarehouse.setAddress(address);
-                                        break;
-                                    case 2:
-                                        System.out.println("Enter the new phone: ");
-                                        String phone = userInput.nextLine();
-                                        updateWarehouse.setPhone(phone);
-                                        break;
-                                    case -1:
-                                        break;
-                                        default:
-                                            System.out.println("Incorrect option");
-                                }
-                            }
 
+                                System.out.println("What would you like to update for the warehouse? \n1. Address\n2. Phone");
+
+                                int updateSel = validateInt(userInput);
+                            userInput.nextLine();
+                            switch(updateSel) {
+                                case 1:
+                                    System.out.println("Enter the new address: ");
+                                    String address = userInput.nextLine();
+                                    updateWarehouse.setAddress(address);
+                                    break;
+                                case 2:
+                                    System.out.println("Enter the new phone: ");
+                                    String phone = userInput.nextLine();
+                                    updateWarehouse.setPhone(phone);
+                                    break;
+                                case -1:
+                                    break;
+                                default:
+                                    System.out.println("Incorrect option");
+                            }
                             System.out.println("Saving warehouse...");
                             warehouseDB.update(updateWarehouse); //todo: implement update in warehouseDB
+
                         } else {
                             System.out.println("Warehouse not found. Update aborted.");
                         }
@@ -616,7 +616,6 @@ public class UI {
             System.out.println("Invalid input. Please enter a number.");
             userInput.next();
         }
-
         return userInput.nextInt();
     }
     /**
