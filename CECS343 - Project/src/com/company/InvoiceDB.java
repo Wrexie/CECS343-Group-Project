@@ -130,9 +130,9 @@ public class InvoiceDB {
                 pStmt.setInt(1, resultID);
                 pStmt.setInt(2, (int)pair.getKey());
                 pStmt.setInt(3, (int)pair.getValue());
-            }
 
-            pStmt.executeUpdate();
+                pStmt.executeUpdate();
+            }
 
             pStmt.close();
 
