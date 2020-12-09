@@ -100,18 +100,107 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
-            System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Check stock\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
+            System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Update warehouse\n 3.Update stock\n 4.Display all product in Warehouse\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
                     // TODO: 11/26/20 Redirected the user to add warehouse
+                    Warehouse warehouse;
+                    System.out.println("Enter a unique warehouse name: ");
+                    String name = userInput.nextLine();
+                    warehouse = warehouseDB.getPOJO(name);
+                    if(warehouse == null) {
+                        System.out.println("Enter warehouse address: ");
+                        String address = userInput.nextLine();
+                        System.out.println("Enter warehouse phone: ");
+                        String phone = userInput.nextLine();
+                        warehouse = new Warehouse(name, address, phone);
+                        warehouseDB.save(warehouse);
+                    } else {
+                        System.out.println("Aborted. This warehouse already exists.");
+                    }
                     break;
                 case 2:
                     // TODO: 11/26/20 Redirected the user to update warehouse
-                    System.out.format("---------------------------\n    update Warehouse\nWarehouse name: ");
+                    if(warehouseDB.isEmpty()) {
+                        System.out.println("Warehouse table is empty. Please add a new warehouse before updating.");
+                    } else {
+                        System.out.println("Enter the name of a warehouse: ");
+                        String warehouseName = userInput.nextLine();
+                        Warehouse updateWarehouse = warehouseDB.getPOJO(warehouseName);
+                        if(updateWarehouse != null) {
+                            int updateSel = 0;
+                            while(updateSel != -1) {
+                                System.out.println("What would you like to update for the warehouse? \n1. Address\n2. Phone \n-1. Save");
+                                updateSel = validateInt(userInput);
+                                switch(updateSel) {
+                                    case 1:
+                                        System.out.println("Enter the new address: ");
+                                        String address = userInput.nextLine();
+                                        updateWarehouse.setAddress(address);
+                                        break;
+                                    case 2:
+                                        System.out.println("Enter the new phone: ");
+                                        String phone = userInput.nextLine();
+                                        updateWarehouse.setPhone(phone);
+                                        break;
+                                    case -1:
+                                        break;
+                                        default:
+                                            System.out.println("Incorrect option");
+                                }
+                            }
+
+                            System.out.println("Saving warehouse...");
+                            //warehouseDB.update(updateWarehouse); //todo: implement update in warehouseDB
+                        } else {
+                            System.out.println("Warehouse not found. Update aborted.");
+                        }
+                    }
                     break;
                 case 3:
                     // TODO: 12/4/20 Redirected the user to select a warehouse and to update the product from within the warehouse
+
+                    if(warehouseDB.isEmpty()) {
+                        System.out.println("Warehouse table is empty. Please add a warehouse before updating stock.");
+                    } else if(productDB.isEmpty()) {
+                        System.out.println("Product table is empty. Please add a product before updating stock.");
+                    }
+                    else {
+                        System.out.println("Enter a warehouse name: ");
+                        String warehouseName = userInput.nextLine();
+                        Warehouse warehouseStock = warehouseDB.getPOJO(warehouseName);
+                        if(warehouseStock != null) {
+                            //productDB.printAll(warehouse); Maybe change this to only show products in a specific warehouse? //todo: add method in productDB to list product by warehouse name
+                            int prodID = 0;
+                            Product stockUpdate;
+                            while(prodID != -1) {
+                                System.out.println("Enter a product ID. (-1 to exit):");
+                                prodID = validateInt(userInput);
+                                if(prodID != 1) {
+                                    stockUpdate = productDB.getPOJO(prodID);
+                                    if(stockUpdate != null) {
+                                        if(stockUpdate.getWarehouse().getName().equalsIgnoreCase(warehouseStock.getName())) { //checking if the warehouse of product and stated warehouse matches
+                                            System.out.println("Enter quantity to add: ");
+                                            int quantity = validateInt(userInput);
+                                            stockUpdate.addStock(quantity);
+                                        } else {
+                                            System.out.println("Could not find product inside \"" + warehouseStock.getName() + "\" warehouse.");
+                                        }
+                                    } else {
+                                        System.out.println("Aborted. The product does not exist");
+                                    }
+                                }
+
+                            }
+
+                            System.out.println("Saving product changes...");
+                            //productDB.update(); //todo: implement update in productDB
+                        } else {
+                            System.out.println("Aborted. The warehouse does not exist.");
+                        }
+
+                    }
                     break;
                 case 4:
                     // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
