@@ -140,9 +140,6 @@ public class Invoice {
      */
     public void checkPenalty() {
         if(status.equals(InvoiceStatus.UNPAID)) {
-            if(thirtyDayCount > 0) {
-                customer.setStatus(CustomerStatus.SUSPENDED);
-            }
             if(openedDate != null) {
 
                int cycleCount = (int) DAYS.between(openedDate, LocalDate.now()) / 30;
@@ -157,6 +154,9 @@ public class Invoice {
                    thirtyDayCount = cycleCount;
                    taxAmt = total*customer.getTaxRate();
                }
+                if(thirtyDayCount > 0) {
+                    customer.setStatus(CustomerStatus.SUSPENDED);
+                }
             }
         } else {
             System.out.println("Must be used on an UNPAID invoice");

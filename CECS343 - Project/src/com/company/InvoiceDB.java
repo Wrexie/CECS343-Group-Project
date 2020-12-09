@@ -340,7 +340,7 @@ public class InvoiceDB {
             String query = "select * from invoices where status = 'UNPAID'";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
-
+            ResultSet rs2;
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
                 double total = rs.getDouble("TOTAL");
@@ -361,10 +361,10 @@ public class InvoiceDB {
                 query = "select productid, quantityordered from orderdetails where invoiceid = ?";
                 pStmt = conn.prepareStatement(query);
                 pStmt.setInt(1, invoiceid);
-                rs = pStmt.executeQuery();
-                while(rs.next()) {
-                    productID = rs.getInt("PRODUCTID");
-                    quantityOrdered = rs.getInt("QUANTITYORDERED");
+                rs2 = pStmt.executeQuery();
+                while(rs2.next()) {
+                    productID = rs2.getInt("PRODUCTID");
+                    quantityOrdered = rs2.getInt("QUANTITYORDERED");
                     prodList.put(productID, quantityOrdered);
                 }
 
@@ -375,6 +375,7 @@ public class InvoiceDB {
                         date, customer, employee, prodList, resultStatus);
 
                 invoice.checkPenalty();
+                customerdb.update(invoice.getCustomer());
                 update(invoice);
 
             }

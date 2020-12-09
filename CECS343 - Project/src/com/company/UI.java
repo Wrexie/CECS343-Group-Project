@@ -424,7 +424,6 @@ public class UI {
      */
     private static void invoiceMenu(Scanner userInput) {
         int sel = 0;
-
         while (sel != -1) {
             System.out.format("---------------------------\n    Invoice Menu\nWhat would you like to do?" +
                     "\n 1.Add invoice\n 2.Make Payment\n 3.Display open invoices\n 4.Display closed invoices" +
@@ -450,17 +449,17 @@ public class UI {
                         Invoice invoice;
                         double total = 0;
                         LocalDate opened = null;
-                        while(true) {
+                        while (true) {
                             System.out.println("Would you like to create a PAID invoice or UNPAID");
                             str = userInput.nextLine();
-                            if(str.equalsIgnoreCase("PAID")) {
+                            if (str.equalsIgnoreCase("PAID")) {
                                 str = InvoiceStatus.PAID.toString();
                                 System.out.println("Enter invoice total $: ");
                                 total = validateDouble(userInput);
                                 System.out.println("Enter the date for the invoice.");
                                 opened = validateDate(userInput);
                                 break;
-                            } else if(str.equalsIgnoreCase("UNPAID")) {
+                            } else if (str.equalsIgnoreCase("UNPAID")) {
                                 str = InvoiceStatus.UNPAID.toString();
                                 break;
                             } else {
@@ -472,79 +471,86 @@ public class UI {
                         double deliveryFee;
                         boolean isDeliverable;
                         LocalDate date = LocalDate.now();
-                        Customer customer;
+                        Customer customer = null;
                         Employee employee;
                         System.out.println("Enter delivery fee (0 if no delivery): ");
                         deliveryFee = validateDouble(userInput);
 
-                        if(deliveryFee == 0) {
+                        if (deliveryFee == 0) {
                             isDeliverable = false;
                         } else {
                             isDeliverable = true;
                         }
 
                         customerDB.printAll();
-                        while(true) {
-                            System.out.println("Enter the ID of the customer: ");
-                            customer = customerDB.getPOJO(validateInt(userInput));
+                        boolean quit = true;
+                        int choice;
+                        while (true) {
+                            System.out.println("Enter the ID of the customer (-1 to exit to Invoice main menu): ");
+                            choice = validateInt(userInput);
+                            if(choice == -1) {
+                                break;
+                            }
+                            customer = customerDB.getPOJO(choice);
                             if (customer == null) {
                                 System.out.println("Customer was not found. Try again");
                             } else if (str.equalsIgnoreCase("UNPAID") && customer.getStatus() == CustomerStatus.SUSPENDED) {
                                 System.out.println("This customer has been suspended. To add an unpaid invoice change their status to ACTIVE.");
                             } else if (str.equalsIgnoreCase("UNPAID") && customer.getStatus() == CustomerStatus.INACTIVE) {
                                 System.out.println("This customer has an INACTIVE status. To add an unpaid invoice change their status to ACTIVE.");
-                            }
-                                else {
-                                break;
-                            }
-                        }
-
-                        employeeDB.printAll();
-                        while(true) {
-                            System.out.println("Enter ID of salesperson: ");
-                            employee = employeeDB.getPOJO(validateInt(userInput));
-                            if(employee == null) {
-                                System.out.println("Salesperson was not found. Try again");
                             } else {
+                                quit = false;
                                 break;
                             }
                         }
-
-
-                        if(str.equalsIgnoreCase("UNPAID")) {
-                            invoice = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
-                        } else if(str.equalsIgnoreCase("PAID")){
-                            invoice = new Invoice(total, isDeliverable, deliveryFee, opened, customer, employee);
-                        } else {
-                            invoice = null;
-                        }
-
-                        int productSel = 0;
-                        Product product;
-                        productDB.printAll();
-                        while(invoice != null && productSel != -1) {
-                            System.out.println("Enter product ID to add to invoice (-1 to exit): ");
-                            productSel = validateInt(userInput);
-
-                            if(productSel != -1) {
-                                product = productDB.getPOJO(productSel);
-                                if(product == null) {
-                                    System.out.println("Product could not be found or does not exist.");
+                        if (!quit) {
+                            employeeDB.printAll();
+                            while (true) {
+                                System.out.println("Enter ID of salesperson: ");
+                                employee = employeeDB.getPOJO(validateInt(userInput));
+                                if (employee == null) {
+                                    System.out.println("Salesperson was not found. Try again");
                                 } else {
-                                    System.out.println("Enter quantity:");
-                                    int quantity = validateInt(userInput);
-                                    product = invoice.addProduct(product, quantity);
-                                    if(product != null) {
-                                        productDB.update(product);
-                                    }
+                                    break;
                                 }
-
                             }
-                        }
 
-                        System.out.println("Saving invoice...");
-                        if(invoice != null) {
-                            invoiceDB.save(invoice);
+
+                            if (str.equalsIgnoreCase("UNPAID")) {
+                                invoice = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
+                            } else if (str.equalsIgnoreCase("PAID")) {
+                                invoice = new Invoice(total, isDeliverable, deliveryFee, opened, customer, employee);
+                            } else {
+                                invoice = null;
+                            }
+
+                            int productSel = 0;
+                            Product product;
+                            productDB.printAll();
+                            while (invoice != null && productSel != -1) {
+                                System.out.println("Enter product ID to add to invoice (-1 to exit): ");
+                                productSel = validateInt(userInput);
+
+                                if (productSel != -1) {
+                                    product = productDB.getPOJO(productSel);
+                                    if (product == null) {
+                                        System.out.println("Product could not be found or does not exist.");
+                                    } else {
+                                        System.out.println("Enter quantity:");
+                                        int quantity = validateInt(userInput);
+                                        product = invoice.addProduct(product, quantity);
+                                        if (product != null) {
+                                            productDB.update(product);
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            System.out.println("Saving invoice...");
+                            if (invoice != null) {
+                                invoiceDB.save(invoice);
+                            }
                         }
                     }
 
