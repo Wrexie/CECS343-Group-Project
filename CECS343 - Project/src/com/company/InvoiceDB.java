@@ -333,4 +333,55 @@ public class InvoiceDB {
         }
     }
 
+    public void updatePenalty() {
+        CustomerDB customerdb = new CustomerDB(conn);
+        EmployeeDB employeedb = new EmployeeDB(conn);
+        try {
+            String query = "select * from invoices where status = 'UNPAID'";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+
+            while(rs.next()) {
+                int invoiceid = rs.getInt("INVOICEID");
+                double total = rs.getDouble("TOTAL");
+                double remaining = rs.getDouble("REMAININGBALANCE");
+                int customerid = rs.getInt("CUSTOMERID");
+                int employeeid = rs.getInt("EMPLOYEEID");
+                double deliveryFee = rs.getDouble("DELIVERYFEE");
+                boolean isDeliverable = rs.getBoolean("ISDELIVERABLE");
+                LocalDate date = rs.getDate("OPENEDDATE").toLocalDate();
+                int thirtyDayCount = rs.getInt("THIRTYDAYCOUNT");
+                double taxAmount = rs.getDouble("TAXAMOUNT");
+                double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
+                InvoiceStatus resultStatus = InvoiceStatus.valueOf(rs.getString("STATUS"));
+
+                HashMap<Integer, Integer> prodList = new HashMap<Integer, Integer>();
+                int productID;
+                int quantityOrdered;
+                query = "select productid, quantityordered from orderdetails where invoiceid = ?";
+                pStmt = conn.prepareStatement(query);
+                pStmt.setInt(1, invoiceid);
+                rs = pStmt.executeQuery();
+                while(rs.next()) {
+                    productID = rs.getInt("PRODUCTID");
+                    quantityOrdered = rs.getInt("QUANTITYORDERED");
+                    prodList.put(productID, quantityOrdered);
+                }
+
+                Customer customer = customerdb.getPOJO(customerid);
+                Employee employee = employeedb.getPOJO(employeeid);
+
+                Invoice invoice = new Invoice(invoiceid, total, remaining, isDeliverable, deliveryFee, thirtyDayCount,
+                        date, customer, employee, prodList, resultStatus);
+
+                invoice.checkPenalty();
+                update(invoice);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
