@@ -3,15 +3,12 @@ package com.company;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.InputMismatchException;
 import java.sql.*;
 
 public class UI {
     // for testing purpose
     public static String DB_URL = "jdbc:derby:CECS343DB";
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-    static final String PRINT_FORMAT="%-25s%-25s%-25s%-25s\n";
-    static final String PRINT_FORMAT2 = "%-25s%-25s%-45s%-25s%-35s%-25s%-25s" + PRINT_FORMAT;
     public static Connection conn;
     private static CustomerDB customerDB;
     private static EmployeeDB employeeDB;
@@ -58,7 +55,6 @@ public class UI {
      * mainMenu: Is the central hub where the user can direct a certain "action" that he/she wishes to do.
      */
     private static void mainMenu() {
-        // temporary value TODO: 11/28/20 needs to have the "LOGIN CONTROLLER" to process the user click
         Scanner userInput = new Scanner(System.in);
         // --------------------------------------
 
@@ -107,7 +103,6 @@ public class UI {
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    // TODO: 11/26/20 Redirected the user to add warehouse
                     Warehouse warehouse;
                     System.out.println("Enter a unique warehouse name: ");
                     String name = userInput.nextLine();
@@ -124,10 +119,10 @@ public class UI {
                     }
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update warehouse
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Warehouse table is empty. Please add a new warehouse before updating.");
                     } else {
+                        warehouseDB.printAll();
                         System.out.println("Enter the name of a warehouse: ");
                         String warehouseName = userInput.nextLine();
                         Warehouse updateWarehouse = warehouseDB.getPOJO(warehouseName);
@@ -154,7 +149,7 @@ public class UI {
                                     System.out.println("Incorrect option");
                             }
                             System.out.println("Saving warehouse...");
-                            warehouseDB.update(updateWarehouse); //todo: implement update in warehouseDB
+                            warehouseDB.update(updateWarehouse);
 
                         } else {
                             System.out.println("Warehouse not found. Update aborted.");
@@ -162,8 +157,6 @@ public class UI {
                     }
                     break;
                 case 3:
-                    // TODO: 12/4/20 Redirected the user to select a warehouse and to update the product from within the warehouse
-
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Warehouse table is empty. Please add a warehouse before updating stock.");
                     } else if(productDB.isEmpty()) {
@@ -202,17 +195,28 @@ public class UI {
                         } else {
                             System.out.println("Aborted. The warehouse does not exist.");
                         }
-
+                        if(userInput.hasNextLine()) {
+                            userInput.nextLine();
+                        }
                     }
                     break;
                 case 4:
-                    // TODO: 12/4/20 display quantity for each product by warehouse. <- from rfp
-                    System.out.println();
-                    warehouseDB.printAll();
-                    System.out.println();
-                    System.out.println("Enter a warehouse name: ");
-                    String warehouseName = userInput.nextLine();
-                    warehouseDB.printProducts(warehouseName);
+                    if(warehouseDB.isEmpty()) {
+                        System.out.println("Customer does not exist in the database or no customers have been added yet.");
+                    } else {
+                        System.out.println();
+                        warehouseDB.printAll();
+                        System.out.println();
+                        System.out.println("Enter a warehouse name: ");
+                        String warehouseName = userInput.nextLine();
+                        Warehouse display = warehouseDB.getPOJO(warehouseName);
+                        if(display == null) {
+                            System.out.println("That Warehouse does not exist.");
+                        } else {
+                            warehouseDB.printProducts(warehouseName);
+                        }
+                    }
+
                     break;
 
                 case 5:
@@ -352,7 +356,6 @@ public class UI {
 
                     break;
                 case 2:
-                    // TODO: 11/26/20 Redirected the user to update customer
                     customerDB.printAll();
                     System.out.println("\nEnter the ID for the customer you would like to update: ");
 
@@ -657,19 +660,17 @@ public class UI {
             sel = getUserOption(userInput);
             switch (sel) {
                 case 1:
-                    // TODO: 11/26/20 Redirected the user to add product
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Cannot add a product since no warehouses have been " +
                                 "added to the database. Please add a warehouse to the database first.");
                     } else {
-                        //warehouseDB.printAll();
+                        warehouseDB.printAll();
                         Warehouse warehouse;
-                        while(true) {
                             System.out.println("Enter warehouse name: ");
                             String name = userInput.nextLine();
                             warehouse = warehouseDB.getPOJO(name);
                             if(warehouse == null) {
-                                System.out.println("Warehouse does not exist. Try again");
+                                System.out.println("Warehouse does not exist. Process Aborted");
                             } else {
                                 System.out.println("Enter product name");
                                 String prodName = userInput.nextLine();
@@ -685,7 +686,6 @@ public class UI {
                                 productDB.save(product);
                                 break;
                             }
-                        }
 
                     }
                     break;
@@ -696,8 +696,6 @@ public class UI {
                     productDB.printAll();
                     break;
                 case 3:
-                    // TODO: 12/4/20 Display products in inventory that have 5 or fewer in the warehouse
-                    //  (sorted in increasing order by quantity) <- from rfp
                     productDB.printNeedRestock();
                     break;
 
