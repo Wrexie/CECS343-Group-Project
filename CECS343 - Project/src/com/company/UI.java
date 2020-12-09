@@ -65,6 +65,7 @@ public class UI {
 
         int sel = 0;
         while (sel != -1){
+            invoiceDB.updatePenalty(); //calculates whether unpaid invoices should be billed extra
             System.out.format("---------------------------\n    Main Menu\nWhat would you like to do?\n 1.Warehouse menu\n 2.Salesman menu\n 3.Customer menu\n 4.Invoice menu\n 5.Product menu\n-1.Quit\n");
             sel = getUserOption(userInput);
             switch (sel){
