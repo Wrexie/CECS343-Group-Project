@@ -526,7 +526,7 @@ public class UI {
                         }
 
                         System.out.println("Saving invoice...");
-                        if(invoice == null) {
+                        if(invoice != null) {
 
                             invoiceDB.save(invoice);
                         }
