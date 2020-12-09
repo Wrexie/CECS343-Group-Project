@@ -220,4 +220,73 @@ public class InvoiceDB {
         return true;
     }
 
+    public void printPaid() {
+        try {
+            String query = "select * from invoices where status = 'paid' order by total desc";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+            System.out.println("Paid Invoices: ");
+            System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
+                    "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+            System.out.println();
+
+            while(rs.next()) {
+                int invoiceid = rs.getInt("INVOICEID");
+                double total = rs.getDouble("TOTAL");
+                double remaining = rs.getDouble("REMAININGBALANCE");
+                int customerid = rs.getInt("CUSTOMERID");
+                int employeeid = rs.getInt("EMPLOYEEID");
+                double deliveryFee = rs.getDouble("DELIVERYFEE");
+                boolean isDeliverable = rs.getBoolean("ISDELIVERABLE");
+                LocalDate date = rs.getDate("OPENEDDATE").toLocalDate();
+                int thirtyDayCount = rs.getInt("THIRTYDAYCOUNT");
+                double taxAmount = rs.getDouble("TAXAMOUNT");
+                double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
+                String status = rs.getString("STATUS");
+
+                System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
+                        thirtyDayCount, taxAmount, commissionAmount, status);
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void printUnpaid() {
+        try {
+            String query = "select * from invoices where status = 'unpaid' order by openeddate asc";
+            PreparedStatement pStmt = conn.prepareStatement(query);
+            ResultSet rs = pStmt.executeQuery();
+            System.out.println("Unpaid Invoices: ");
+            System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
+                    "Delivery Fee", "Is Deliverable?", "Opened Date", "Thirty Day Count", "Tax Amount", "Commission Amount", "Status");
+            System.out.println();
+
+            while(rs.next()) {
+                int invoiceid = rs.getInt("INVOICEID");
+                double total = rs.getDouble("TOTAL");
+                double remaining = rs.getDouble("REMAININGBALANCE");
+                int customerid = rs.getInt("CUSTOMERID");
+                int employeeid = rs.getInt("EMPLOYEEID");
+                double deliveryFee = rs.getDouble("DELIVERYFEE");
+                boolean isDeliverable = rs.getBoolean("ISDELIVERABLE");
+                LocalDate date = rs.getDate("OPENEDDATE").toLocalDate();
+                int thirtyDayCount = rs.getInt("THIRTYDAYCOUNT");
+                double taxAmount = rs.getDouble("TAXAMOUNT");
+                double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
+                String status = rs.getString("STATUS");
+
+                System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
+                        thirtyDayCount, taxAmount, commissionAmount, status);
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
