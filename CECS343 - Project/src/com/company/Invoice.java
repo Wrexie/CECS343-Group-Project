@@ -100,10 +100,15 @@ public class Invoice {
             }
 
         } else {
-            prodList.put(product.getProductID(), quantity);
-            for(int i = 0; i < quantity; i++) {
-                product.addStock(-1);
+            if(product.getStock()-quantity >= 0) {
+                prodList.put(product.getProductID(), quantity);
+                for(int i = 0; i < quantity; i++) {
+                    product.addStock(-1);
+                }
+            } else {
+                System.out.println("Not enough stock! Aborted.");
             }
+
         }
 
         return product;
