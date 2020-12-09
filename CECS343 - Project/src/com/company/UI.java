@@ -458,10 +458,6 @@ public class UI {
                             str = userInput.nextLine();
                             if (str.equalsIgnoreCase("PAID")) {
                                 str = InvoiceStatus.PAID.toString();
-                                System.out.println("Enter invoice total $: ");
-                                total = validateDouble(userInput);
-                                System.out.println("Enter the date for the invoice.");
-                                opened = validateDate(userInput);
                                 break;
                             } else if (str.equalsIgnoreCase("UNPAID")) {
                                 str = InvoiceStatus.UNPAID.toString();
@@ -474,9 +470,11 @@ public class UI {
 
                         double deliveryFee;
                         boolean isDeliverable;
-                        LocalDate date = LocalDate.now();
                         Customer customer = null;
                         Employee employee;
+                        System.out.println("Enter the opened date for the invoice.");
+                        opened = validateDate(userInput);
+
                         System.out.println("Enter delivery fee (0 if no delivery): ");
                         deliveryFee = validateDouble(userInput);
 
@@ -521,7 +519,7 @@ public class UI {
 
 
                             if (str.equalsIgnoreCase("UNPAID")) {
-                                invoice = new Invoice(isDeliverable, deliveryFee, date, customer, employee);
+                                invoice = new Invoice(isDeliverable, deliveryFee, opened, customer, employee);
                             } else if (str.equalsIgnoreCase("PAID")) {
                                 invoice = new Invoice(total, isDeliverable, deliveryFee, opened, customer, employee);
                             } else {
@@ -690,9 +688,6 @@ public class UI {
                     }
                     break;
                 case 2:
-                    // TODO: 12/4/20 Display each product (product name, Selling Price, Cost Price,
-                    //  Total Quantity on Hand, Quantity Sold, Total Sales, Total Cost, Total Profit
-                    //  and Total Profit Percent) need to be sorted in decreasing order of profit percent. <- from rfp
                     productDB.printAll();
                     break;
                 case 3:

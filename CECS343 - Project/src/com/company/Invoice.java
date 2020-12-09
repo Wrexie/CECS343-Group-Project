@@ -82,7 +82,6 @@ public class Invoice {
 
 
     public Product addProduct(Product product, int quantity) {
-        if(status.equals(InvoiceStatus.UNPAID)) {
 
             if(product.getStock()-quantity >= 0) { //check stock of prod before adding
                 prodList.put(product.getProductID(), quantity);
@@ -93,23 +92,9 @@ public class Invoice {
                     commAmount += product.getSellPrice()*employee.getCommRate();
                 }
                 taxAmt = total*customer.getTaxRate();
-                return product;
             } else {
-
             System.out.println("Not enough stock! Aborted.");
             }
-
-        } else {
-            if(product.getStock()-quantity >= 0) {
-                prodList.put(product.getProductID(), quantity);
-                for(int i = 0; i < quantity; i++) {
-                    product.addStock(-1);
-                }
-            } else {
-                System.out.println("Not enough stock! Aborted.");
-            }
-
-        }
 
         return product;
     }
