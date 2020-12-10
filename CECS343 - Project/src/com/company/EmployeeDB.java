@@ -3,9 +3,9 @@ import java.sql.*;
 import java.text.DecimalFormat;
 
 //EmployeeDB class:
-//Handles all of the required interactions with the database
+//Handles all of the required interactions with the database for employee data
 public class EmployeeDB {
-    //Database connection
+    //local atabase connection variable
     private Connection conn;
 
     //Print format for printing employee data retrieved from DB
