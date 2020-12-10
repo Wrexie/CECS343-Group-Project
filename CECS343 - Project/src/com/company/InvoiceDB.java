@@ -254,8 +254,8 @@ public class InvoiceDB {
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
                         "Delivery Fee", "Is Deliverable?", "Opened Date",  "Tax Amount", "Commission Amount", "Status");
                 System.out.println();
-                System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
-                         taxAmount, commissionAmount, status);
+                System.out.printf(local_format, invoiceid, df.format(total), df.format(remaining), customerid, employeeid, df.format(deliveryFee), isDeliverable, date,
+                        df.format(taxAmount), df.format(commissionAmount), status);
 
                 System.out.println();
                 printProducts(invoiceid);
@@ -294,8 +294,8 @@ public class InvoiceDB {
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
                         "Delivery Fee", "Is Deliverable?", "Opened Date", "Tax Amount", "Commission Amount", "Status");
                 System.out.println();
-                System.out.printf(local_format, invoiceid, total, remaining, customerid, employeeid, deliveryFee, isDeliverable, date,
-                         taxAmount, commissionAmount, status);
+                System.out.printf(local_format, invoiceid, df.format(total), df.format(remaining), customerid, employeeid, df.format(deliveryFee), isDeliverable, date,
+                        df.format(taxAmount), df.format(commissionAmount), status);
 
                 System.out.println();
                 printProducts(invoiceid);
