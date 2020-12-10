@@ -5,30 +5,44 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import java.sql.*;
 
+
+//UI class containing main function that calls all the necessary menu functions
+//containing the UI logic for the program
 public class UI {
-    // for testing purpose
+    //Database URL
     public static String DB_URL = "jdbc:derby:CECS343DB";
+    //Apache Derby DBMS driver (for embedded database)
     static final String JDBC_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     public static Connection conn;
+
+    //Create all database class objects to be used in UI class
     private static CustomerDB customerDB;
     private static EmployeeDB employeeDB;
     private static InvoiceDB invoiceDB;
     private static WarehouseDB warehouseDB;
     private static ProductDB productDB;
 
+    //Main
     public static void main(String[] args) {
         Statement stmt = null;
         try {
+            //Establish driver
             Class.forName(JDBC_DRIVER);
+            //Create connection to database
             conn = DriverManager.getConnection(DB_URL);
             stmt = conn.createStatement();
 
+            //Call login menu
             loginMenu();
+
+            //Set connection for all database class objects
             customerDB = new CustomerDB(conn);
             employeeDB = new EmployeeDB(conn);
             invoiceDB = new InvoiceDB(conn);
             warehouseDB = new WarehouseDB(conn);
             productDB = new ProductDB(conn);
+
+            //Call main menu after user logs in
             mainMenu();
         } catch (SQLNonTransientConnectionException e) {
             System.out.println("Connection to Database failed. (Database was not found)");
@@ -62,24 +76,31 @@ public class UI {
         int sel = 0;
         while (sel != -1){
             invoiceDB.updatePenalty(); //calculates whether unpaid invoices should be billed extra
+            //Main menu
             System.out.format("---------------------------\n    Main Menu\nWhat would you like to do?\n 1.Warehouse menu\n 2.Salesman menu\n 3.Customer menu\n 4.Invoice menu\n 5.Product menu\n-1.Quit\n");
             sel = getUserOption(userInput);
             switch (sel){
+                //Access warehouse menu
                 case 1:
                     warehouseMenu(userInput);
                     break;
+                //Access employee menu
                 case 2:
                     salesmanMenu(userInput);
                     break;
+                //Access customer menu
                 case 3:
                     customerMenu(userInput);
                     break;
+                //Access Invoice menu
                 case 4:
                     invoiceMenu(userInput);
                     break;
+                //Access Product menu
                 case 5:
                     productMenu(userInput);
                     break;
+                //Exit program
                 case -1:
                     System.out.format("Thank you for using the system.");
                     break;
@@ -98,10 +119,12 @@ public class UI {
         int sel = 0;
 
         while (sel != -1) {
+            //Warehouse menu
             System.out.format("---------------------------\n    Warehouse Menu\nWhat would you like to do?\n 1.Add warehouse\n 2.Update warehouse" +
                     "\n 3.Update stock\n 4.Display all product in Warehouse\n 5.Display all warehouses\n-1.Return to main menu\n");
             sel = getUserOption(userInput);
             switch (sel) {
+                //Add warehouse
                 case 1:
                     Warehouse warehouse;
                     System.out.println("Enter a unique warehouse name: ");
@@ -118,6 +141,7 @@ public class UI {
                         System.out.println("Aborted. This warehouse already exists.");
                     }
                     break;
+                //Update warehouse
                 case 2:
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Warehouse table is empty. Please add a new warehouse before updating.");
@@ -156,6 +180,7 @@ public class UI {
                         }
                     }
                     break;
+                //Update stock
                 case 3:
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Warehouse table is empty. Please add a warehouse before updating stock.");
@@ -200,6 +225,7 @@ public class UI {
                         }
                     }
                     break;
+                //Display all products in warehouse
                 case 4:
                     if(warehouseDB.isEmpty()) {
                         System.out.println("Customer does not exist in the database or no customers have been added yet.");
@@ -218,12 +244,12 @@ public class UI {
                     }
 
                     break;
-
+                //Display all warehouses
                 case 5:
                     System.out.println();
                     warehouseDB.printAll();
                     break;
-
+                //Exit warehouse menu
                 case -1:
                     break;
                 default:
