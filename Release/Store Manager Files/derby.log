@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Mon Dec 07 15:14:02 PST 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-3f7b-bcdd-00000f87c5f8 
-on database directory C:\Users\Rith\Documents\GitHub\CECS343-Group-Project\Release\Store Manager Files\CECS343DB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@6e5e91e4 
-Loaded from file:/C:/Users/Rith/Documents/GitHub/CECS343-Group-Project/Release/Store%20Manager%20Files/Store%20Manager.exe
+Thu Dec 10 14:43:45 PST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0176-4ed3-1597-00000f91a060 
+on database directory C:\Users\Andrew\Documents\GitHub\CECS343-Group-Project\Release\Store Manager Files\CECS343DB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4e0e2f2a 
+Loaded from file:/C:/Users/Andrew/Documents/GitHub/CECS343-Group-Project/Release/Store%20Manager%20Files/Store%20Manager.exe
 java.vendor=Oracle Corporation
-java.runtime.version=11.0.2+9-LTS
-user.dir=C:\Users\Rith\Documents\GitHub\CECS343-Group-Project\Release\Store Manager Files
+java.runtime.version=14.0.2+12-46
+user.dir=C:\Users\Andrew\Documents\GitHub\CECS343-Group-Project\Release\Store Manager Files
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
