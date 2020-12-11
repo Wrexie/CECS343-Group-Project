@@ -40,7 +40,7 @@ public class ProductDB {
         }
     }
 
-    //Returns entity object created from data retrieved from database
+    //Returns requested entity object created from data retrieved from database
     public Product getPOJO(int id) {
         //Attribute variables
         int resultID;

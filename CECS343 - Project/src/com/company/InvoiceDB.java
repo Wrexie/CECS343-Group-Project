@@ -6,15 +6,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+//InvoiceDB class
+//Handles all required interactions with the database for invoice data
 public class InvoiceDB {
+    //Private DB connection variable
     private Connection conn;
-    public InvoiceDB(Connection conn) {this.conn = conn;}
-    //static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    //Print format for printing invoice data retrieved from database
     static final String local_format = "%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s%-25s";
+    //Print format for printing product data retrieved from database
     static final String product_format = "%-25s%-25s%-25s";
+    //Formatting for decimal values
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
+    //Constructor. Takes in DB connection
+    public InvoiceDB(Connection conn) {this.conn = conn;}
+
+    //Returns requested entity object retrieved from DB
     public Invoice getPOJO(int id) {
+        //Attribute variables
         int resultID = 0;
         double total;
         double remainingBalance;
@@ -27,20 +36,27 @@ public class InvoiceDB {
         double taxAmt;
         double commAmount;
         InvoiceStatus status;
+        //Map to store products for creating invoice object
         HashMap<Integer, Integer> prodList = new HashMap<Integer, Integer>();
         int productID;
         int quantityOrdered;
+        //Customer object for creating invoice object
         Customer customer;
+        //Employee object for creating invoice object
         Employee employee;
+        //Customer and Employee DB objects to retrieve appropriate customer and employee data
         CustomerDB customerdb = new CustomerDB(conn);
         EmployeeDB employeedb = new EmployeeDB(conn);
 
         try {
+            //Select all data for the requested invoice
             String query = "select * from invoices where invoiceid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
             pStmt.setInt(1, id);
+            //Execute query
             ResultSet rs = pStmt.executeQuery();
 
+            //Iterate through returned row from DB
             if(rs.next()) {
                 resultID = rs.getInt("INVOICEID");
                 total = rs.getDouble("TOTAL");
@@ -55,32 +71,43 @@ public class InvoiceDB {
                 commAmount = rs.getDouble("COMMISSIONAMOUNT");
                 status = InvoiceStatus.valueOf(rs.getString("STATUS"));
 
+                //Get appropriate customer object
                 customer = customerdb.getPOJO(customerID);
+                //Get appropriate employee object
                 employee = employeedb.getPOJO(employeeID);
 
+                //Select products pertaining to that invoice
                 query = "select productid, quantityordered from orderdetails where invoiceid = ?";
                 pStmt = conn.prepareStatement(query);
                 pStmt.setInt(1, resultID);
                 rs = pStmt.executeQuery();
+
+                //Iterate through all rows returned
                 while(rs.next()) {
                     productID = rs.getInt("PRODUCTID");
                     quantityOrdered = rs.getInt("QUANTITYORDERED");
+                    //Put each product retrieved from DB into map
                     prodList.put(productID, quantityOrdered);
                 }
+                //Create and return new invoice object
                 return new Invoice(resultID, total, remainingBalance, isDeliverable, deliveryFee, thirtyDayCount, openedDate, customer, employee, prodList, status);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //Return null by default if requested data is not found
         return null;
     }
 
+    //Saves invoice object created by user to the DB
     public void save(Invoice invoice) {
+        //Iterator to iterate through product map containing all products for specific invoice
         Iterator it = invoice.getProdList().entrySet().iterator();
-        InvoiceDB invoicedb = new InvoiceDB(conn);
+
         int resultID = 0;
         try {
+            //Insert invoice object data to database
             String query = "insert into invoices (total, remainingbalance, customerid, employeeid," +
                     "deliveryfee, isdeliverable, openeddate, thirtydaycount, taxamount, commissionamount, status)" +
                     "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -98,8 +125,11 @@ public class InvoiceDB {
             pStmt.setDouble(10, invoice.getCommAmount());
             pStmt.setString(11, invoice.getStatus().toString());
 
+            //Execute statement
             pStmt.executeUpdate();
 
+            //Since invoiceIDs are auto generated, we need to query DB for the latest invoice to get the invoiceID to insert products into
+            //orderdetails table that associates a list of products with a specific invoice
             query = "select invoiceid from invoices where total = ? and remainingbalance = ? and customerid = ? and employeeid = ? " +
                     "and deliveryfee = ? and isdeliverable = ? and openeddate = ? and thirtydaycount = ? and taxamount = ? " +
                     "and commissionamount = ? and status = ?";
@@ -122,10 +152,13 @@ public class InvoiceDB {
                 resultID = rs.getInt("INVOICEID");
             }
 
+            //Statement to insert product data into orderdetails for the invoice created
             query = "insert into orderdetails (invoiceid, productid, quantityordered)" +
                     "values(?, ?, ?)";
             pStmt = conn.prepareStatement(query);
 
+            //Iterate through the product map given by the invoice object and insert each product into
+            //orderdetails table
             while(it.hasNext()) {
                 Map.Entry pair = (Map.Entry)it.next();
                 pStmt.setInt(1, resultID);
@@ -142,6 +175,7 @@ public class InvoiceDB {
         }
     }
 
+    //Print all data from invoice table
     public void printAll() {
         try {
             String query = "select * from invoices";
@@ -150,6 +184,7 @@ public class InvoiceDB {
 
             System.out.println("Invoices: ");
 
+            //Iterate through all rows returned from DB
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
                 double total = rs.getDouble("TOTAL");
@@ -164,6 +199,7 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                //Print all data
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
                         "Delivery Fee", "Is Deliverable?", "Opened Date", "Tax Amount", "Commission Amount", "Status");
@@ -182,8 +218,10 @@ public class InvoiceDB {
         }
     }
 
+    //Updates an invoice specified by user
     public void update(Invoice invoice) {
         try {
+            //Update statement
             String query = "update invoices set remainingbalance = ?, total = ?, deliveryfee = ?, taxamount = ?," +
                     "thirtydaycount = ?, commissionamount = ?, status = ?, openeddate = ?, isdeliverable = ?," +
                     "customerid = ?, employeeid = ? where invoiceid = ?";
@@ -211,11 +249,13 @@ public class InvoiceDB {
 
     }
 
+    //Checks if table is empty
     public boolean isEmpty() {
         try {
             String query = "select * from invoices";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
+            //If no data is returned then table is empty. If not then table is not empty
             if(rs.next() == false) {
                 return true;
             }
@@ -229,13 +269,16 @@ public class InvoiceDB {
         return true;
     }
 
+    //Print all paid invoices
     public void printPaid() {
         try {
+            //Select all data for paid invoices
             String query = "select * from invoices where status = 'PAID' order by total desc";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Paid Invoices: ");
 
+            //Iterate through all rows returned from DB
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
                 double total = rs.getDouble("TOTAL");
@@ -250,6 +293,7 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                //Print all data
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
                         "Delivery Fee", "Is Deliverable?", "Opened Date",  "Tax Amount", "Commission Amount", "Status");
@@ -269,13 +313,16 @@ public class InvoiceDB {
 
     }
 
+    //Print all unpaid invoices
     public void printUnpaid() {
         try {
+            //Select all data for unpaid invoices
             String query = "select * from invoices where status = 'UNPAID' order by openeddate asc";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();
             System.out.println("Unpaid Invoices: ");
 
+            //Iterate through all rows returned from DB
             while(rs.next()) {
                 int invoiceid = rs.getInt("INVOICEID");
                 double total = rs.getDouble("TOTAL");
@@ -290,6 +337,7 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 String status = rs.getString("STATUS");
 
+                //Print all data
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.printf(local_format, "InvoiceID", "Total", "Remaining Balance", "CustomerID", "EmployeeID",
                         "Delivery Fee", "Is Deliverable?", "Opened Date", "Tax Amount", "Commission Amount", "Status");
@@ -308,8 +356,10 @@ public class InvoiceDB {
         }
     }
 
+    //Print all products attached to an invoice
     public void printProducts(int invoiceid) {
         try {
+            //Select all products attached to invoice specified
             String query = "select orderdetails.productid, productname, quantityordered" +
                     " from orderdetails inner join products on products.productid = orderdetails.productid where invoiceid = ?";
             PreparedStatement pStmt = conn.prepareStatement(query);
@@ -320,11 +370,13 @@ public class InvoiceDB {
             System.out.printf(product_format, "Product ID", "Product Name", "Quantity Ordered");
             System.out.println();
 
+            //Iterate through all rows returned by DB
             while(rs.next()) {
                 int productid = rs.getInt("PRODUCTID");
                 String productname = rs.getString("PRODUCTNAME");
                 int quantityordered = rs.getInt("QUANTITYORDERED");
 
+                //Print data
                 System.out.printf(product_format, productid, productname, quantityordered);
                 System.out.println();
             }
@@ -334,10 +386,12 @@ public class InvoiceDB {
         }
     }
 
+    //Calls check penalty method on each unpaid invoice in database and updates those invoices in the database
     public void updatePenalty() {
         CustomerDB customerdb = new CustomerDB(conn);
         EmployeeDB employeedb = new EmployeeDB(conn);
         try {
+            //Select all unpaid invoices
             String query = "select * from invoices where status = 'UNPAID'";
             PreparedStatement pStmt = conn.prepareStatement(query);
             ResultSet rs = pStmt.executeQuery();

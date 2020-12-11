@@ -42,7 +42,7 @@ public class EmployeeDB {
         }
     }
 
-    //Method that returns an entity object using data retrieved from database
+    //Method that returns the requested entity object using data retrieved from database
     public Employee getPOJO(int id) {
         //Variables to store attribute data
         int resultID;
