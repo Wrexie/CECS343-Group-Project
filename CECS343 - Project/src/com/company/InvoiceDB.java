@@ -410,27 +410,38 @@ public class InvoiceDB {
                 double commissionAmount = rs.getDouble("COMMISSIONAMOUNT");
                 InvoiceStatus resultStatus = InvoiceStatus.valueOf(rs.getString("STATUS"));
 
+                //Hashmap to store product list
                 HashMap<Integer, Integer> prodList = new HashMap<Integer, Integer>();
                 int productID;
                 int quantityOrdered;
+                //Select all products for the current unpaid invoice being iterated through
                 query = "select productid, quantityordered from orderdetails where invoiceid = ?";
                 pStmt = conn.prepareStatement(query);
                 pStmt.setInt(1, invoiceid);
                 rs2 = pStmt.executeQuery();
+
+                //Iterate through the rows returned from the database for products
                 while(rs2.next()) {
                     productID = rs2.getInt("PRODUCTID");
                     quantityOrdered = rs2.getInt("QUANTITYORDERED");
                     prodList.put(productID, quantityOrdered);
                 }
 
+                //Get appropriate customer and employee objects
                 Customer customer = customerdb.getPOJO(customerid);
                 Employee employee = employeedb.getPOJO(employeeid);
 
+                //Create new invoice object with all the data retrieved
                 Invoice invoice = new Invoice(invoiceid, total, remaining, isDeliverable, deliveryFee, thirtyDayCount,
                         date, customer, employee, prodList, resultStatus);
 
+                //Call check penalty method on the new invoice created
                 invoice.checkPenalty();
+
+                //Suspend customer if delinquent
                 customerdb.update(invoice.getCustomer());
+
+                //Update existing invoice with new data
                 update(invoice);
 
             }
